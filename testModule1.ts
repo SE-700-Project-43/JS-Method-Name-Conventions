@@ -7,7 +7,7 @@
  * @flow
  */
 
-import type { ReactNodeList } from "shared/ReactTypes";
+import { ReactNodeList } from "shared/ReactTypes";
 
 import {
   checkHtmlStringCoercion,
@@ -24,7 +24,7 @@ import {
   enableFizzExternalRuntime,
 } from "shared/ReactFeatureFlags";
 
-import type {
+import {
   Destination,
   Chunk,
   PrecomputedChunk,

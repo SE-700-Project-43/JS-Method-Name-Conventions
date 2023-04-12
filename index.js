@@ -1,5 +1,5 @@
 var esprima = require("esprima");
-script = `function myFunc() {
+const script = `function myFunc() {
     for (let i = 0; i < 2; i++) {
         console.log(i)
     }
@@ -20,17 +20,31 @@ tree = esprima.parseScript(script, { tokens: true });
 // console.log("Tokens");
 // console.log(tree.tokens);
 // console.log();
-// console.log("Reading file");
+console.log("Reading file");
+console.log("i am here ");
 
+// File Sync
 const fs = require("fs");
+
+// Read file
 const buffer = fs.readFileSync("testModule2.js");
+
+// Get file as string
 const fileContent = buffer.toString();
+
+// Removing Hashbang/Shebang from shell scripts
 fileContent.replace(/^#!(.*\n)/, "");
 
 // console.log(fileContent);
-
-reactTree = esprima.parseModule(fileContent, { tolerant: true });
-console.log(reactTree);
+reactTree = esprima.parseModule(
+  fileContent,
+  { tolerant: true, tokens: true },
+  function (node, metadata) {
+    if (node.type == "Identifier") console.log(node.type, node.name, metadata);
+  }
+);
+// console.log(reactTree);
+// console.log(reactTree.tokens);
 
 // require(['esprima'], function (parser) {
 //     // Do something with parser, e.g.
