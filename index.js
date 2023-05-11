@@ -20,14 +20,16 @@ tree = esprima.parseScript(script, { tokens: true });
 // console.log("Tokens");
 // console.log(tree.tokens);
 // console.log();
-console.log("Reading file");
-console.log("i am here ");
+// console.log("Reading file");
+// console.log("i am here ");
 
 // File Sync
 const fs = require("fs");
 
 // Read file
-const buffer = fs.readFileSync("testModule2.js");
+const buffer = fs.readFileSync(
+  "./test_scripts/200ok-ch-organice-components-entry-index.js"
+);
 
 // Get file as string
 const fileContent = buffer.toString();
@@ -35,16 +37,46 @@ const fileContent = buffer.toString();
 // Removing Hashbang/Shebang from shell scripts
 fileContent.replace(/^#!(.*\n)/, "");
 
+var previousNodeType = "";
+const first = true;
+
 // console.log(fileContent);
-reactTree = esprima.parseModule(
+reactTree = esprima.parseScript(
   fileContent,
-  { tolerant: true, tokens: true },
+  { tolerant: true, tokens: true, jsx: true },
   function (node, metadata) {
-    if (node.type == "Identifier") console.log(node.type, node.name, metadata);
+    console.log(node.type, node.name, metadata);
+    // if (
+    //   (previousNodeType == "MethodDefinition" ||
+    //     previousNodeType == "FunctionDeclaration" ||
+    //     previousNodeType == "FunctionExpression") &&
+    //   node.name != undefined
+    // ) {
+    //   console.log(node.name, metadata);
+    // }
+
+    // previousNodeType = node.type;
+    // if (
+    //   node.type == "MethodDefinition" ||
+    //   node.type == "FunctionDeclaration" ||
+    //   node.type == "FunctionExpression"
+    // )
+    //   console.log(node.name);
+    // if (node.type == "Identifier") console.log(node.name);
+
+    // console.log(node.type);
+
+    // if (node.type == "Identifier") console.log(node.type, node.name, metadata);
+    // if (node.type == "Punctuator") {
+    //   console.log(node.type);
+    // }
   }
 );
 // console.log(reactTree);
 // console.log(reactTree.tokens);
+reactTree.tokens.forEach((element) => {
+  console.log(element);
+});
 
 // require(['esprima'], function (parser) {
 //     // Do something with parser, e.g.
