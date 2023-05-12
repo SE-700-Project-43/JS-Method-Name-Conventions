@@ -25,6 +25,7 @@ tree = esprima.parseScript(script, { tokens: true });
 
 // File Sync
 const fs = require("fs");
+const { validateHeaderName } = require("http");
 
 // Read file
 const buffer = fs.readFileSync(
@@ -45,7 +46,7 @@ reactTree = esprima.parseScript(
   fileContent,
   { tolerant: true, tokens: true, jsx: true },
   function (node, metadata) {
-    console.log(node.type, node.name, metadata);
+    // console.log(node.type, node.name, metadata);
     // if (
     //   (previousNodeType == "MethodDefinition" ||
     //     previousNodeType == "FunctionDeclaration" ||
@@ -54,7 +55,6 @@ reactTree = esprima.parseScript(
     // ) {
     //   console.log(node.name, metadata);
     // }
-
     // previousNodeType = node.type;
     // if (
     //   node.type == "MethodDefinition" ||
@@ -63,9 +63,7 @@ reactTree = esprima.parseScript(
     // )
     //   console.log(node.name);
     // if (node.type == "Identifier") console.log(node.name);
-
     // console.log(node.type);
-
     // if (node.type == "Identifier") console.log(node.type, node.name, metadata);
     // if (node.type == "Punctuator") {
     //   console.log(node.type);
@@ -74,8 +72,94 @@ reactTree = esprima.parseScript(
 );
 // console.log(reactTree);
 // console.log(reactTree.tokens);
-reactTree.tokens.forEach((element) => {
-  console.log(element);
+
+// return True if the current bracket is invalid and we should reset the check
+function checkInvalidBrackets(token, identifier, openBracket, closeBracket) {
+  type = token.type;
+  value = token.value;
+
+  if (type == "Punctuator") {
+    if (
+      identifier &&
+      !openBracket &&
+      !closeBracket &&
+      (value == ")" || value == "}" || value == "{" || value == ";")
+    ) {
+      return true;
+    } else if (
+      identifier &&
+      openBracket &&
+      !closeBracket &&
+      (value == "(" || value == "{" || value == "}" || value == ";")
+    ) {
+      return true;
+    } else if (
+      identifier &&
+      openBracket &&
+      closeBracket &&
+      (value == "(" || value == ")" || value == "}" || value == ";")
+    ) {
+      return true;
+    }
+  } else {
+    return false;
+  }
+}
+
+let identifierName = "";
+let identifier = false;
+let openBracket = false;
+let closeBracket = false;
+let openCurly = false;
+
+reactTree.tokens.forEach((t) => {
+  if (checkInvalidBrackets(t, identifier, openBracket, closeBracket)) {
+    identifier = false;
+    openBracket = false;
+    closeBracket = false;
+    openCurly = false;
+  }
+
+  if (t.type == "Identifier" && !identifier) {
+    identifierName = t.value;
+    identifier = true;
+  } else if (
+    identifier &&
+    !openBracket &&
+    !closeBracket &&
+    !openCurly &&
+    t.type == "Punctuator" &&
+    t.value == "("
+  ) {
+    openBracket = true;
+  } else if (
+    identifier &&
+    openBracket &&
+    !closeBracket &&
+    !openCurly &&
+    t.type == "Punctuator" &&
+    t.value == ")"
+  ) {
+    closeBracket = true;
+  } else if (
+    identifier &&
+    openBracket &&
+    closeBracket &&
+    !openCurly &&
+    t.type == "Punctuator" &&
+    t.value == "{"
+  ) {
+    openCurly = true;
+  }
+
+  if (openCurly) {
+    console.log(identifierName);
+
+    identifier = false;
+    openBracket = false;
+    closeBracket = false;
+    openCurly = false;
+  }
 });
 
 // require(['esprima'], function (parser) {
