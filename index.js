@@ -90,7 +90,7 @@ function checkInvalidBrackets(token, identifier, openBracket, closeBracket) {
       identifier &&
       openBracket &&
       !closeBracket &&
-      (value == "(" || value == "{" || value == "}" || value == ";")
+      (value == "(" || value == ";")
     ) {
       return true;
     } else if (
@@ -106,6 +106,13 @@ function checkInvalidBrackets(token, identifier, openBracket, closeBracket) {
   }
 }
 
+function resetCheck() {
+  identifier = false;
+  openBracket = false;
+  closeBracket = false;
+  openCurly = false;
+}
+
 let identifierName = "";
 let identifier = false;
 let openBracket = false;
@@ -114,10 +121,7 @@ let openCurly = false;
 
 reactTree.tokens.forEach((t) => {
   if (checkInvalidBrackets(t, identifier, openBracket, closeBracket)) {
-    identifier = false;
-    openBracket = false;
-    closeBracket = false;
-    openCurly = false;
+    resetCheck();
   }
 
   if (t.type == "Identifier" && !identifier) {
@@ -155,10 +159,7 @@ reactTree.tokens.forEach((t) => {
   if (openCurly) {
     console.log(identifierName);
 
-    identifier = false;
-    openBracket = false;
-    closeBracket = false;
-    openCurly = false;
+    resetCheck();
   }
 });
 
