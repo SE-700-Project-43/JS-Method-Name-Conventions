@@ -1,9 +1,3 @@
-
-# # from spiral.simple_splitters import pure_camelcase_split
-# import sys
-# from spiral import ronin
-# from spiral import ronin
-
 import csv
 from spiral import ronin
 import enchant
