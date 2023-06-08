@@ -2,22 +2,8 @@ var esprima = require("esprima");
 const fs = require("fs");
 
 const generateMethodNames = async (fileDirectory) => {
-  // var loc = window.location.pathname;
-  // var dir = loc.substring(0, loc.lastIndexOf("/"));
-  // console.log("Current directory: " + process.cwd());
-  // console.log(fileDirectory);
   const buffer = fs.readFileSync(fileDirectory);
   fileContent = buffer.toString();
-
-  // fs.createReadStream(fileDirectory)
-  //   .on("data", function (chunk) {
-  //     console.log("huhhh", chunk);
-  //     for (i = 0; i < chunk.length; ++i) if (chunk[i] == 10) lineCount++;
-  //   })
-  //   .on("end", function () {
-  //     // console.log(count);
-  //   });
-  // filePath = process.argv[2];
 
   try {
     var count = 0;
@@ -33,16 +19,14 @@ const generateMethodNames = async (fileDirectory) => {
     let openBracket = false;
     let closeBracket = false;
     let openCurly = false;
+    let names = [];
 
     tree.tokens.forEach((t) => {
       if (checkInvalidBrackets(t, identifier, openBracket, closeBracket)) {
-        // resetCheck();
-
         identifier = false;
         openBracket = false;
         closeBracket = false;
         openCurly = false;
-        // console.log("123", identifier, openBracket, closeBracket, openCurly);
       }
       // console.log(t);
       if (t.type == "Identifier" && !identifier) {
@@ -79,6 +63,7 @@ const generateMethodNames = async (fileDirectory) => {
 
       if (openCurly) {
         // console.log(identifierName);
+        names = names.concat(identifierName);
         count++;
 
         // resetCheck();
@@ -95,7 +80,7 @@ const generateMethodNames = async (fileDirectory) => {
     var lineCount = split_lines.length - 1;
 
     console.log(lineCount + " " + count);
-    return [lineCount, count];
+    return [lineCount, count, names];
   } catch (e) {
     return [];
   }

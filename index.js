@@ -24,6 +24,15 @@ getFileList("./test_scripts")
           x.push(data[0]);
           y.push(data[1]);
         }
+        console.log("whatt", data[2]);
+
+        if (data[2]) {
+          data[2].map((n) => {
+            console.log("name", n);
+            fs.appendFileSync("./names.csv", n);
+            fs.appendFileSync("./names.csv", "\n");
+          });
+        }
 
         if (index === res.length - 1) {
           fs.appendFileSync("./test.csv", x.join());
