@@ -20,7 +20,7 @@ with open('names.csv') as csv_file:
 
 print(variableNames)
 
-columnNames = ["Variable Name", "word", "isDictionary", "POS Tag"]
+columnNames = ["Variable Name", "word", "isDictionary", "POS Tag", "Length"]
 writer.writerow(columnNames)
 
 # analysis
@@ -31,7 +31,7 @@ for s in variableNames:
         dictWord = d.check(word)
         # print(f)
         doc = nlp(word)
-        row = [s, word, str(dictWord), str(doc[0].pos_)]
+        row = [s, word, str(dictWord), str(doc[0].pos_), len(word)]
         writer.writerow(row)
 
 f.close()
