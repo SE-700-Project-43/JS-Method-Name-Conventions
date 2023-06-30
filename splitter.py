@@ -45,11 +45,19 @@ def checkGrammar(name):
     else:
         return False
 
+file = open('./data.csv', 'w')
+dataWriter = csv.writer(file)
+columnNames = ["Variable Name", "Length", "Grammar"]
 
 # analysis
 for s in variableNames:
     splitWords = ronin.split(s)
     isGrammarCorrect = checkGrammar(splitWords)
+
+    if (len(splitWords) > 0):
+        row = [s, len(s), str(isGrammarCorrect)]
+        dataWriter.writerow(row)
+
     for word in splitWords:
         dictWord = d.check(word)
         # print(f)
@@ -58,4 +66,4 @@ for s in variableNames:
         writer.writerow(row)
 
 f.close()
-
+file.close()
