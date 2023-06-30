@@ -1,16 +1,6 @@
 const generateMethodNames = require("./parser/parser");
 const getFileList = require("./parser/fileReader");
 
-var esprima = require("esprima");
-const script = `function myFunc() {
-    for (let i = 0; i < 2; i++) {
-        console.log(i)
-    }
-    var x = 9
-    return x^2
-}`;
-tree = esprima.parseScript(script, { tokens: true });
-
 const fs = require("fs");
 
 getFileList("./test_scripts")
@@ -35,9 +25,12 @@ getFileList("./test_scripts")
         }
 
         if (index === res.length - 1) {
-          fs.appendFileSync("./test.csv", x.join());
-          fs.appendFileSync("./test.csv", "\n");
-          fs.appendFileSync("./test.csv", y.join());
+          for (let i = 0; i < x.length; i++) {
+            fs.appendFileSync("./test.csv", x[i].toString());
+            fs.appendFileSync("./test.csv", ",");
+            fs.appendFileSync("./test.csv", y[i].toString());
+            fs.appendFileSync("./test.csv", "\n");
+          }
         }
       });
     });
