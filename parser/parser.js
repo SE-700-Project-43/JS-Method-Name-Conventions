@@ -17,6 +17,7 @@ const generateMethodNames = async (fileDirectory) => {
     });
 
     let identifierName = "";
+    let identifierToken = null;
     let identifier = false;
     let openBracket = false;
     let closeBracket = false;
@@ -35,9 +36,11 @@ const generateMethodNames = async (fileDirectory) => {
       }
 
       // console.log(t);
+      // console.log(t.value, t.loc);
 
       if (t.type == "Identifier") {
         identifierName = t.value;
+        identifierToken = t;
         identifier = true;
         openBracket = false;
         closeBracket = false;
@@ -65,7 +68,8 @@ const generateMethodNames = async (fileDirectory) => {
         t.value == "{"
       ) {
         names = names.concat(identifierName);
-        lines = lines.concat(t.loc.start.line);
+        lines = lines.concat(identifierToken.loc.start.line);
+        // console.log(identifierName, identifierToken.loc.start.line);
         count++;
 
         resetCheck();

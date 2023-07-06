@@ -17,18 +17,14 @@ getFileList("./test_scripts")
         // console.log("whatt", data[2]);
 
         if (data[2]) {
-          data[2].map((n) => {
-            // console.log("name", n);
-            fs.appendFileSync("./names.csv", n);
+          for (let i = 0; i < data[2].length; i++) {
+            fs.appendFileSync("./names.csv", data[2][i].toString());
             fs.appendFileSync("./names.csv", ",");
             fs.appendFileSync("./names.csv", file.toString());
             fs.appendFileSync("./names.csv", ",");
-            fs.appendFileSync(
-              "./names.csv",
-              data[3][data[2].indexOf(n)].toString()
-            );
+            fs.appendFileSync("./names.csv", data[3][i].toString());
             fs.appendFileSync("./names.csv", "\n");
-          });
+          }
         }
 
         if (index === res.length - 1) {
