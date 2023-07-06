@@ -14,12 +14,19 @@ getFileList("./test_scripts")
           x.push(data[0]);
           y.push(data[1]);
         }
-        console.log("whatt", data[2]);
+        // console.log("whatt", data[2]);
 
         if (data[2]) {
           data[2].map((n) => {
-            console.log("name", n);
+            // console.log("name", n);
             fs.appendFileSync("./names.csv", n);
+            fs.appendFileSync("./names.csv", ",");
+            fs.appendFileSync("./names.csv", file.toString());
+            fs.appendFileSync("./names.csv", ",");
+            fs.appendFileSync(
+              "./names.csv",
+              data[3][data[2].indexOf(n)].toString()
+            );
             fs.appendFileSync("./names.csv", "\n");
           });
         }

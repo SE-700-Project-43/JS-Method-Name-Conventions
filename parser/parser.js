@@ -12,31 +12,39 @@ const generateMethodNames = async (fileDirectory) => {
       tolerant: true,
       tokens: true,
       jsx: true,
+      loc: true,
+      range: true,
     });
 
     let identifierName = "";
     let identifier = false;
     let openBracket = false;
     let closeBracket = false;
-    let openCurly = false;
     let names = [];
+    let lines = [];
+
+    function resetCheck() {
+      identifier = false;
+      openBracket = false;
+      closeBracket = false;
+    }
 
     tree.tokens.forEach((t) => {
       if (checkInvalidBrackets(t, identifier, openBracket, closeBracket)) {
-        identifier = false;
-        openBracket = false;
-        closeBracket = false;
-        openCurly = false;
+        resetCheck();
       }
+
       // console.log(t);
-      if (t.type == "Identifier" && !identifier) {
+
+      if (t.type == "Identifier") {
         identifierName = t.value;
         identifier = true;
+        openBracket = false;
+        closeBracket = false;
       } else if (
         identifier &&
         !openBracket &&
         !closeBracket &&
-        !openCurly &&
         t.type == "Punctuator" &&
         t.value == "("
       ) {
@@ -45,7 +53,6 @@ const generateMethodNames = async (fileDirectory) => {
         identifier &&
         openBracket &&
         !closeBracket &&
-        !openCurly &&
         t.type == "Punctuator" &&
         t.value == ")"
       ) {
@@ -54,23 +61,14 @@ const generateMethodNames = async (fileDirectory) => {
         identifier &&
         openBracket &&
         closeBracket &&
-        !openCurly &&
         t.type == "Punctuator" &&
         t.value == "{"
       ) {
-        openCurly = true;
-      }
-
-      if (openCurly) {
-        // console.log(identifierName);
         names = names.concat(identifierName);
+        lines = lines.concat(t.loc.start.line);
         count++;
 
-        // resetCheck();
-        identifier = false;
-        openBracket = false;
-        closeBracket = false;
-        openCurly = false;
+        resetCheck();
       }
     });
 
@@ -80,7 +78,7 @@ const generateMethodNames = async (fileDirectory) => {
     var lineCount = split_lines.length - 1;
 
     console.log(lineCount + " " + count);
-    return [lineCount, count, names];
+    return [lineCount, count, names, lines];
   } catch (e) {
     return [];
   }
@@ -116,13 +114,6 @@ function checkInvalidBrackets(token, identifier, openBracket, closeBracket) {
   } else {
     return false;
   }
-}
-
-function resetCheck() {
-  identifier = false;
-  openBracket = false;
-  closeBracket = false;
-  openCurly = false;
 }
 
 module.exports = generateMethodNames;
