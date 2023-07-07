@@ -11,26 +11,8 @@ tool = language_tool_python.LanguageTool('en-US')
 # print("working " + text)
 # print(matches)
 
-
 d = enchant.Dict("en_US")
 nlp = spacy.load("en_core_web_sm")
-
-f = open('./results_words_dict_pos.csv', 'w')
-writer = csv.writer(f)
-
-variableNames = []
-
-# read in names 
-with open('results_method_names.csv') as csv_file:
-    csv_reader = csv.reader(csv_file, delimiter=',')
-    line_count = 0
-    for row in csv_reader:
-        variableNames.append(row[0])
-
-# print(variableNames)
-
-columnNames = ["Variable Name", "word", "isDictionary", "POS Tag", "Length", "Grammar"]
-writer.writerow(columnNames)
 
 def all_lower(my_list):
     return [x.lower() for x in my_list]
@@ -45,9 +27,28 @@ def checkGrammar(name):
     else:
         return False
 
-file = open('./results_method_name_grammar.csv', 'w')
-dataWriter = csv.writer(file)
+wordsFile = open('./results_words_dict_pos.csv', 'w', newline='')
+wordsWriter = csv.writer(wordsFile)
+
+namesFile = open('./results_method_name_grammar.csv', 'w', newline='')
+namesWriter = csv.writer(namesFile)
+
+variableNames = []
+
+# read in names 
+with open('results_method_names.csv') as csv_file:
+    csv_reader = csv.reader(csv_file, delimiter=',')
+    line_count = 0
+    for row in csv_reader:
+        variableNames.append(row[0])
+
+# print(variableNames)
+
+columnNames = ["Variable Name", "word", "isDictionary", "POS Tag", "Length", "Grammar"]
+wordsWriter.writerow(columnNames)
+
 columnNames = ["Variable Name", "Length", "Grammar"]
+namesWriter.writerow(columnNames)
 
 # analysis
 for s in variableNames:
@@ -56,14 +57,14 @@ for s in variableNames:
 
     if (len(splitWords) > 0):
         row = [s, len(s), str(isGrammarCorrect)]
-        dataWriter.writerow(row)
+        namesWriter.writerow(row)
 
     for word in splitWords:
         dictWord = d.check(word)
         # print(f)
         doc = nlp(word)
         row = [s, word, str(dictWord), str(doc[0].pos_), len(word), str(isGrammarCorrect)]
-        writer.writerow(row)
+        wordsWriter.writerow(row)
 
-f.close()
-file.close()
+wordsFile.close()
+namesFile.close()
