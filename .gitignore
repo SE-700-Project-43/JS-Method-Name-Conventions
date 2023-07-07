@@ -143,4 +143,11 @@ dist
 
 package-lock.json
 
+# repos used for analysis
+./test_scripts/*
+
+# output files
+*.csv
+*.jpeg
+
 # End of https://www.toptal.com/developers/gitignore/api/node
