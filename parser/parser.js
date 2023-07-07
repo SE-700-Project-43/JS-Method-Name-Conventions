@@ -93,7 +93,7 @@ function checkInvalidBrackets(token, identifier, openBracket, closeBracket) {
   value = token.value;
 
   if (type == "Punctuator") {
-    if (value == "," || value == ";") {
+    if (value == "," || value == ";" || value == ":") {
       return true;
     }
 
