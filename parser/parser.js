@@ -38,7 +38,7 @@ const generateMethodNames = async (fileDirectory) => {
       // console.log(t);
       // console.log(t.value, t.loc);
 
-      if (t.type == "Identifier") {
+      if (t.type == "Identifier" && !openBracket) {
         identifierName = t.value;
         identifierToken = t;
         identifier = true;
@@ -93,25 +93,24 @@ function checkInvalidBrackets(token, identifier, openBracket, closeBracket) {
   value = token.value;
 
   if (type == "Punctuator") {
+    if (value == "," || value == ";") {
+      return true;
+    }
+
     if (
       identifier &&
       !openBracket &&
       !closeBracket &&
-      (value == ")" || value == "}" || value == "{" || value == ";")
+      (value == ")" || value == "}" || value == "{")
     ) {
       return true;
-    } else if (
-      identifier &&
-      openBracket &&
-      !closeBracket &&
-      (value == "(" || value == ";")
-    ) {
+    } else if (identifier && openBracket && !closeBracket && value == "(") {
       return true;
     } else if (
       identifier &&
       openBracket &&
       closeBracket &&
-      (value == "(" || value == ")" || value == "}" || value == ";")
+      (value == "(" || value == ")" || value == "}")
     ) {
       return true;
     }
