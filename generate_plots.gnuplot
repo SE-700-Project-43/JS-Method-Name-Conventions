@@ -10,7 +10,7 @@ set ylabel "Methods per File"
 set autoscale                      
 set datafile separator ","         
 set output "plot_scatter_methods_to_loc.jpeg"   
-plot "test.csv" title "" pt 7 ps 1
+plot "results_methods_per_loc.csv" title "" pt 7 ps 1
 
 set xtic font "sans,6"
 set boxwidth 0.8
