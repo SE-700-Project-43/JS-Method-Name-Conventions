@@ -20,49 +20,50 @@ getFileList("./test_scripts")
 
         if (data[2]) {
           for (let i = 0; i < data[2].length; i++) {
-            fs.appendFileSync("./names.csv", data[2][i].toString());
-            fs.appendFileSync("./names.csv", ",");
-            fs.appendFileSync(
-              "./names.csv",
-              data[2][i].toString().length.toString()
-            );
-            fs.appendFileSync("./names.csv", ",");
-            fs.appendFileSync("./names.csv", file.toString());
-            fs.appendFileSync("./names.csv", ",");
-            fs.appendFileSync("./names.csv", data[3][i].toString());
-            fs.appendFileSync("./names.csv", "\n");
+            const methodName = data[2][i].toString();
+            const length = methodName.length;
+            const methodNameLength = length.toString();
+            const fileName = file.toString();
+            const lineNumber = data[3][i].toString();
 
-            nameLengthCounts[data[2][i].toString().length] = nameLengthCounts[
-              data[2][i].toString().length
-            ]
-              ? nameLengthCounts[data[2][i].toString().length] + 1
+            fs.appendFileSync("./results_method_names.csv", methodName);
+            fs.appendFileSync("./results_method_names.csv", ",");
+            fs.appendFileSync("./results_method_names.csv", methodNameLength);
+            fs.appendFileSync("./results_method_names.csv", ",");
+            fs.appendFileSync("./results_method_names.csv", fileName);
+            fs.appendFileSync("./results_method_names.csv", ",");
+            fs.appendFileSync("./results_method_names.csv", lineNumber);
+            fs.appendFileSync("./results_method_names.csv", "\n");
+
+            nameLengthCounts[length] = nameLengthCounts[length]
+              ? nameLengthCounts[length] + 1
               : 1;
           }
         }
 
         if (index === res.length - 1) {
           for (let i = 0; i < x.length; i++) {
-            fs.appendFileSync("./test.csv", x[i].toString());
-            fs.appendFileSync("./test.csv", ",");
-            fs.appendFileSync("./test.csv", y[i].toString());
-            fs.appendFileSync("./test.csv", "\n");
+            const loc = x[i].toString();
+            const methods = y[i].toString();
+
+            fs.appendFileSync("./results_methods_per_loc.csv", loc);
+            fs.appendFileSync("./results_methods_per_loc.csv", ",");
+            fs.appendFileSync("./results_methods_per_loc.csv", methods);
+            fs.appendFileSync("./results_methods_per_loc.csv", "\n");
           }
 
-          console.log(nameLengthCounts);
-          // nameLengthCounts.foreach((k, v) => {
-          //   // fs.appendFileSync()
-          // });
+          // console.log(nameLengthCounts);
+
           for (let length in nameLengthCounts) {
-            let count = nameLengthCounts[length];
+            const nameLength = length.toString();
+            const count = nameLengthCounts[length].toString();
+
             fs.appendFileSync(
               "./results_method_name_length_counts.csv",
-              length.toString()
+              nameLength
             );
             fs.appendFileSync("./results_method_name_length_counts.csv", ",");
-            fs.appendFileSync(
-              "./results_method_name_length_counts.csv",
-              count.toString()
-            );
+            fs.appendFileSync("./results_method_name_length_counts.csv", count);
             fs.appendFileSync("./results_method_name_length_counts.csv", "\n");
           }
         }

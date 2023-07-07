@@ -15,19 +15,19 @@ tool = language_tool_python.LanguageTool('en-US')
 d = enchant.Dict("en_US")
 nlp = spacy.load("en_core_web_sm")
 
-f = open('./results.csv', 'w')
+f = open('./results_words_dict_pos.csv', 'w')
 writer = csv.writer(f)
 
 variableNames = []
 
 # read in names 
-with open('names.csv') as csv_file:
+with open('results_method_names.csv') as csv_file:
     csv_reader = csv.reader(csv_file, delimiter=',')
     line_count = 0
     for row in csv_reader:
         variableNames.append(row[0])
 
-print(variableNames)
+# print(variableNames)
 
 columnNames = ["Variable Name", "word", "isDictionary", "POS Tag", "Length", "Grammar"]
 writer.writerow(columnNames)
@@ -45,7 +45,7 @@ def checkGrammar(name):
     else:
         return False
 
-file = open('./data.csv', 'w')
+file = open('./results_method_name_grammar.csv', 'w')
 dataWriter = csv.writer(file)
 columnNames = ["Variable Name", "Length", "Grammar"]
 

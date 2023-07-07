@@ -81,7 +81,7 @@ const generateMethodNames = async (fileDirectory) => {
     split_lines = to_string.split("\n");
     var lineCount = split_lines.length - 1;
 
-    console.log(lineCount + " " + count);
+    // console.log(lineCount + " " + count);
     return [lineCount, count, names, lines];
   } catch (e) {
     return [];
