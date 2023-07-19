@@ -44,10 +44,10 @@ with open('results_method_names.csv') as csv_file:
 
 # print(variableNames)
 
-columnNames = ["Variable Name", "word", "isDictionary", "POS Tag", "Length", "Grammar"]
+columnNames = ["Method Name", "Individual Word", "Dictionary Word", "POS Tag", "Length (Characters)", "Grammatical Structure"]
 wordsWriter.writerow(columnNames)
 
-columnNames = ["Variable Name", "Length", "Grammar"]
+columnNames = ["Method Name", "Length (Words)", "Verb Phrase", "Full Words"]
 namesWriter.writerow(columnNames)
 
 # analysis
@@ -55,16 +55,16 @@ for s in variableNames:
     splitWords = ronin.split(s)
     isGrammarCorrect = checkGrammar(splitWords)
 
-    if (len(splitWords) > 0):
-        row = [s, len(splitWords), str(isGrammarCorrect)]
-        namesWriter.writerow(row)
-
     for word in splitWords:
         dictWord = d.check(word)
         # print(f)
         doc = nlp(word)
         row = [s, word, str(dictWord), str(doc[0].pos_), len(word), str(isGrammarCorrect)]
         wordsWriter.writerow(row)
+
+    if (len(splitWords) > 0):
+        row = [s, len(splitWords)]
+        namesWriter.writerow(row)
 
 wordsFile.close()
 namesFile.close()
