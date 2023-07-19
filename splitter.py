@@ -27,10 +27,10 @@ def check_grammatical_structure(name):
     else:
         return False
 
-words_file = open('./results_words_dict_pos.csv', 'w', newline='')
+words_file = open('./results_words_conventions.csv', 'w', newline='')
 words_writer = csv.writer(words_file)
 
-names_file = open('./results_method_name_grammar.csv', 'w', newline='')
+names_file = open('./results_method_names_conventions.csv', 'w', newline='')
 names_writer = csv.writer(names_file)
 
 method_names = []
