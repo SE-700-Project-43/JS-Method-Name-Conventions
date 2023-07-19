@@ -54,6 +54,7 @@ names_writer.writerow(columnNames)
 for name in method_names:
     split_words = ronin.split(name)
     is_grammatically_correct = check_grammatical_structure(split_words)
+    is_verb_phrase = False
 
     for word in split_words:
         is_dictionary_term = str(d.check(word))
@@ -62,8 +63,11 @@ for name in method_names:
         row = [name, word, is_dictionary_term, part_of_speech_tag, len(word)]
         words_writer.writerow(row)
 
+        if part_of_speech_tag == "VERB":
+            is_verb_phrase = True
+
     if (len(split_words) > 0):
-        row = [name, len(split_words), is_grammatically_correct]
+        row = [name, len(split_words), is_grammatically_correct, is_verb_phrase]
         names_writer.writerow(row)
 
 words_file.close()
