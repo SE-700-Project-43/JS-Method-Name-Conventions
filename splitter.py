@@ -56,7 +56,7 @@ for s in variableNames:
     isGrammarCorrect = checkGrammar(splitWords)
 
     if (len(splitWords) > 0):
-        row = [s, len(s), str(isGrammarCorrect)]
+        row = [s, len(splitWords), str(isGrammarCorrect)]
         namesWriter.writerow(row)
 
     for word in splitWords:
