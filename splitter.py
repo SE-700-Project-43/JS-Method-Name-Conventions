@@ -33,6 +33,10 @@ words_writer = csv.writer(words_file)
 names_file = open('./results_method_names_conventions.csv', 'w', newline='')
 names_writer = csv.writer(names_file)
 
+names_lengths_file = open('./results_method_name_length_counts_by_words.csv', 'w', newline='')
+names_lengths_writer = csv.writer(names_lengths_file)
+names_lengths = {}
+
 method_names = []
 
 # read in names 
@@ -74,5 +78,12 @@ for name in method_names:
         row = [name, len(split_words), is_grammatically_correct, is_verb_phrase, is_full_words]
         names_writer.writerow(row)
 
+        names_lengths[len(split_words)] = names_lengths.get(len(split_words), 0) + 1 
+
+for k,v in names_lengths.items():
+    row = [k , v]
+    names_lengths_writer.writerow(row)
+
 words_file.close()
 names_file.close()
+names_lengths_file.close()
