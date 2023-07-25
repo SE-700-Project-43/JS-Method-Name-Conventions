@@ -14,30 +14,6 @@ tool = language_tool_python.LanguageTool('en-US')
 d = enchant.Dict("en_US")
 nlp = spacy.load("en_core_web_sm")
 
-<<<<<<< HEAD
-#file for splitter results
-f = open('./results.csv', 'w')
-writer = csv.writer(f)
-
-#file for non dictionary words
-nonDictionaryFile = open('./nonDictionary.txt', 'w')
-
-variableNames = []
-
-# read in names 
-with open('names.csv') as csv_file:
-    csv_reader = csv.reader(csv_file, delimiter=',')
-    line_count = 0
-    for row in csv_reader:
-        variableNames.append(row[0])
-
-print(variableNames)
-
-columnNames = ["Variable Name", "word", "isDictionary", "POS Tag", "Length", "Grammar", "IsCamelCase", "isUnderscoreCase"]
-writer.writerow(columnNames)
-
-=======
->>>>>>> 54fa1305e389116edc1f15f0e83c1069b67f531b
 def all_lower(my_list):
     return [x.lower() for x in my_list]
 
@@ -50,13 +26,12 @@ def check_grammatical_structure(name):
         return True
     else:
         return False
-<<<<<<< HEAD
-    
+
 def checkCamelCase(words):
   for (index, x) in enumerate(words):
       print(x, index)
 
-      if index is 0:
+      if index == 0:
           if not x[0].islower():
               return False
       else:
@@ -72,29 +47,6 @@ def checkUnderScoreCase(word):
     pythonSplitter = word.split("_")
 
     return roninSplitter == pythonSplitter
-
-# analysis
-for s in variableNames:
-    splitWords = ronin.split(s)
-    isGrammarCorrect = checkGrammar(splitWords)
-    for word in splitWords:
-        dictWord = d.check(word)
-        # print(f)
-        doc = nlp(word)
-        isCamel = checkCamelCase(splitWords)
-        isUnderscore = checkUnderScoreCase(s)
-        row = [s, word, str(dictWord), str(doc[0].pos_), len(word), str(isGrammarCorrect), isCamel, isUnderscore]
-        writer.writerow(row)
-
-        #not a dictionary word, check for idiom/slang/abbreviatoin/acronym
-        if not dictWord:
-            nonDictionaryFile.write(word)
-            nonDictionaryFile.write('\n')
-            
-
-f.close()
-nonDictionaryFile.close()
-=======
 
 words_file = open('./results_words_conventions.csv', 'w', newline='')
 words_writer = csv.writer(words_file)
@@ -120,7 +72,7 @@ with open('results_method_names.csv') as csv_file:
 columnNames = ["Method Name", "Individual Word", "Dictionary Word", "POS Tag", "Length (Characters)"]
 words_writer.writerow(columnNames)
 
-columnNames = ["Method Name", "Length (Words)", "Grammatical Structure", "Verb Phrase", "Full Words"]
+columnNames = ["Method Name", "Length (Words)", "Grammatical Structure", "Verb Phrase", "Full Words", "Camel Case", "Underscore Case"]
 names_writer.writerow(columnNames)
 
 # analysis
@@ -129,6 +81,8 @@ for name in method_names:
     is_grammatically_correct = check_grammatical_structure(split_words)
     is_verb_phrase = False
     is_full_words = True
+    is_camelcase = checkCamelCase(split_words)
+    is_underscore_case = checkUnderScoreCase(name)
 
     for word in split_words:
         is_dictionary_term = str(d.check(word))
@@ -144,7 +98,7 @@ for name in method_names:
             is_full_words = False
 
     if (len(split_words) > 0):
-        row = [name, len(split_words), is_grammatically_correct, is_verb_phrase, is_full_words]
+        row = [name, len(split_words), is_grammatically_correct, is_verb_phrase, is_full_words, is_camelcase, is_underscore_case]
         names_writer.writerow(row)
 
         names_lengths[len(split_words)] = names_lengths.get(len(split_words), 0) + 1 
@@ -152,7 +106,6 @@ for name in method_names:
 for k,v in names_lengths.items():
     row = [k , v]
     names_lengths_writer.writerow(row)
->>>>>>> 54fa1305e389116edc1f15f0e83c1069b67f531b
 
 words_file.close()
 names_file.close()
