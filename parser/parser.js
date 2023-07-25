@@ -12,31 +12,42 @@ const generateMethodNames = async (fileDirectory) => {
       tolerant: true,
       tokens: true,
       jsx: true,
+      loc: true,
+      range: true,
     });
 
     let identifierName = "";
+    let identifierToken = null;
     let identifier = false;
     let openBracket = false;
     let closeBracket = false;
-    let openCurly = false;
     let names = [];
+    let lines = [];
+
+    function resetCheck() {
+      identifier = false;
+      openBracket = false;
+      closeBracket = false;
+    }
 
     tree.tokens.forEach((t) => {
       if (checkInvalidBrackets(t, identifier, openBracket, closeBracket)) {
-        identifier = false;
+        resetCheck();
+      }
+
+      // console.log(t);
+      // console.log(t.value, t.loc);
+
+      if (t.type == "Identifier" && !openBracket) {
+        identifierName = t.value;
+        identifierToken = t;
+        identifier = true;
         openBracket = false;
         closeBracket = false;
-        openCurly = false;
-      }
-      // console.log(t);
-      if (t.type == "Identifier" && !identifier) {
-        identifierName = t.value;
-        identifier = true;
       } else if (
         identifier &&
         !openBracket &&
         !closeBracket &&
-        !openCurly &&
         t.type == "Punctuator" &&
         t.value == "("
       ) {
@@ -45,7 +56,6 @@ const generateMethodNames = async (fileDirectory) => {
         identifier &&
         openBracket &&
         !closeBracket &&
-        !openCurly &&
         t.type == "Punctuator" &&
         t.value == ")"
       ) {
@@ -54,23 +64,15 @@ const generateMethodNames = async (fileDirectory) => {
         identifier &&
         openBracket &&
         closeBracket &&
-        !openCurly &&
         t.type == "Punctuator" &&
         t.value == "{"
       ) {
-        openCurly = true;
-      }
-
-      if (openCurly) {
-        // console.log(identifierName);
         names = names.concat(identifierName);
+        lines = lines.concat(identifierToken.loc.start.line);
+        // console.log(identifierName, identifierToken.loc.start.line);
         count++;
 
-        // resetCheck();
-        identifier = false;
-        openBracket = false;
-        closeBracket = false;
-        openCurly = false;
+        resetCheck();
       }
     });
 
@@ -79,8 +81,8 @@ const generateMethodNames = async (fileDirectory) => {
     split_lines = to_string.split("\n");
     var lineCount = split_lines.length - 1;
 
-    console.log(lineCount + " " + count);
-    return [lineCount, count, names];
+    // console.log(lineCount + " " + count);
+    return [lineCount, count, names, lines];
   } catch (e) {
     return [];
   }
@@ -91,38 +93,30 @@ function checkInvalidBrackets(token, identifier, openBracket, closeBracket) {
   value = token.value;
 
   if (type == "Punctuator") {
+    if (value == "," || value == ";" || value == ":") {
+      return true;
+    }
+
     if (
       identifier &&
       !openBracket &&
       !closeBracket &&
-      (value == ")" || value == "}" || value == "{" || value == ";")
+      (value == ")" || value == "}" || value == "{")
     ) {
       return true;
-    } else if (
-      identifier &&
-      openBracket &&
-      !closeBracket &&
-      (value == "(" || value == ";")
-    ) {
+    } else if (identifier && openBracket && !closeBracket && value == "(") {
       return true;
     } else if (
       identifier &&
       openBracket &&
       closeBracket &&
-      (value == "(" || value == ")" || value == "}" || value == ";")
+      (value == "(" || value == ")" || value == "}")
     ) {
       return true;
     }
   } else {
     return false;
   }
-}
-
-function resetCheck() {
-  identifier = false;
-  openBracket = false;
-  closeBracket = false;
-  openCurly = false;
 }
 
 module.exports = generateMethodNames;
