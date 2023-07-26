@@ -29,7 +29,7 @@ def check_grammatical_structure(name):
 
 def checkCamelCase(words):
   for (index, x) in enumerate(words):
-      print(x, index)
+    #   print(x, index)
 
       if index == 0:
           if not x[0].islower():
@@ -57,6 +57,14 @@ names_writer = csv.writer(names_file)
 names_lengths_file = open('./results_method_name_length_counts_by_words.csv', 'w', newline='')
 names_lengths_writer = csv.writer(names_lengths_file)
 names_lengths = {}
+
+names_conventions_file = open('./results_method_names_conventions_counts.csv', 'w', newline='')
+names_conventions_writer = csv.writer(names_conventions_file)
+names_grmr_struct = {}
+names_verbs = {}
+names_full = {}
+names_camel = {}
+names_underscore = {}
 
 method_names = []
 
@@ -102,10 +110,24 @@ for name in method_names:
         names_writer.writerow(row)
 
         names_lengths[len(split_words)] = names_lengths.get(len(split_words), 0) + 1 
+        names_grmr_struct[str(is_grammatically_correct)] = names_grmr_struct.get(str(is_grammatically_correct), 0) + 1
+        names_verbs[str(is_verb_phrase)] = names_verbs.get(str(is_verb_phrase), 0) + 1
+        names_full[str(is_full_words)] = names_full.get(str(is_full_words), 0) + 1
+        names_camel[str(is_camelcase)] = names_camel.get(str(is_camelcase), 0) + 1
+        names_underscore[str(is_underscore_case)] = names_underscore.get(str(is_underscore_case), 0) + 1
 
 for k,v in names_lengths.items():
     row = [k , v]
     names_lengths_writer.writerow(row)
+
+names_conventions_writer.writerow(["GRMR STRUCT TRUE", names_grmr_struct['True']])
+names_conventions_writer.writerow(["GRMR STRUCT FALSE", names_grmr_struct['False']])
+names_conventions_writer.writerow(["VERB PHRASE TRUE", names_verbs['True']])
+names_conventions_writer.writerow(["VERB PHRASE FALSE", names_verbs['False']])
+names_conventions_writer.writerow(["FULL WORDS TRUE", names_full['True']])
+names_conventions_writer.writerow(["FULL WORDS FALSE", names_full['False']])
+names_conventions_writer.writerow(["CAMEL CASE TRUE", names_camel.get('True', 0)])
+names_conventions_writer.writerow(["UNDERSCORE CASE TRUE", names_underscore.get('True', 0)])
 
 words_file.close()
 names_file.close()
