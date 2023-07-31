@@ -1,7 +1,7 @@
 import language_tool_python
 from spiral import ronin
 
-tool = language_tool_python.LanguageTool('en-US')
+language_tool = language_tool_python.LanguageTool('en-US')
 
 #convert string to lowercase 
 def all_lower(my_list):
@@ -11,7 +11,7 @@ def all_lower(my_list):
 def check_grammatical_structure(name):
     lowercase = all_lower(name)
     sentence = " ".join(lowercase).capitalize()
-    matches = tool.check(sentence)
+    matches = language_tool.check(sentence)
 
     if not matches:
         return True
