@@ -3,7 +3,7 @@ from spiral import ronin
 import enchant
 import spacy
 import language_tool_python
-from naming_style_check import check_grammatical_structure, check_if_camel_case, check_if_underscore_case
+from naming_style_check import check_grammatical_structure, check_camel_case, check_underscore_case
 
 tool = language_tool_python.LanguageTool('en-US')
 

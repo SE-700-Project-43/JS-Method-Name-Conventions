@@ -3,9 +3,11 @@ from spiral import ronin
 
 tool = language_tool_python.LanguageTool('en-US')
 
+#convert string to lowercase 
 def all_lower(my_list):
     return [x.lower() for x in my_list]
 
+#check if a method name has correct gramatical structure 
 def check_grammatical_structure(name):
     lowercase = all_lower(name)
     sentence = " ".join(lowercase).capitalize()
@@ -15,8 +17,9 @@ def check_grammatical_structure(name):
         return True
     else:
         return False
-    
-def check_if_camel_case(words):
+
+#check if method name is valid camel case styling
+def check_camel_case(words):
   for (index, x) in enumerate(words):
     #   print(x, index)
 
@@ -28,7 +31,8 @@ def check_if_camel_case(words):
               return False 
   return True
 
-def check_if_underscore_case(word):
+#check if method name is valid underscore case styling
+def check_underscore_case(word):
     if "_" not in word: 
       return False
     
