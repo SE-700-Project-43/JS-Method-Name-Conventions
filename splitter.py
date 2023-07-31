@@ -2,7 +2,7 @@ import csv
 from spiral import ronin
 import enchant
 import spacy
-from naming_style_check import check_grammatical_structure, check_if_camel_case, check_if_underscore_case
+from naming_style_check import check_grammatical_structure, check_camel_case, check_underscore_case
 
 # checker for dictionary words
 dictionary = enchant.Dict("en_US")
@@ -47,8 +47,8 @@ with open('results_method_names.csv') as csv_file:
 for name in method_names:
     split_words = ronin.split(name) # using the Ronin splitter from the Spiral package to split the method name
     is_grammatically_correct = check_grammatical_structure(split_words) # check if the method name is grammatically correct
-    is_camelcase = check_if_camel_case(split_words) # check if the method name follows correct camel casing convention
-    is_underscore_case = check_if_underscore_case(name) # check if the method name follows correct underscore casing convention
+    is_camelcase = check_camel_case(split_words) # check if the method name follows correct camel casing convention
+    is_underscore_case = check_underscore_case(name) # check if the method name follows correct underscore casing convention
 
     is_verb_phrase = False
     is_full_words = True
