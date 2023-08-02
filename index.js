@@ -2,6 +2,29 @@ const generateMethodNames = require("./parser/parser");
 const getFileList = require("./parser/fileReader");
 
 const fs = require("fs");
+const path = require("path");
+
+fs.readdir("./", (err, files) => {
+  if (err) {
+    console.error("Error reading directory:", err);
+    return;
+  }
+
+  files.forEach((file) => {
+    const filePath = path.join(directoryPath, file);
+
+    // Check if the file has the specified extension
+    if (path.extname(file) === ".csv" || path.extname(file) === ".jpeg") {
+      fs.unlink(filePath, (err) => {
+        if (err) {
+          console.error("Error deleting file:", filePath, err);
+        } else {
+          console.log("File deleted:", filePath);
+        }
+      });
+    }
+  });
+});
 
 getFileList("./test_scripts")
   .then((res) => {
