@@ -11,7 +11,7 @@ fs.readdir("./", (err, files) => {
   }
 
   files.forEach((file) => {
-    const filePath = path.join(directoryPath, file);
+    const filePath = path.join("./", file);
 
     // Check if the file has the specified extension
     if (path.extname(file) === ".csv" || path.extname(file) === ".jpeg") {
