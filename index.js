@@ -30,6 +30,7 @@ getFileList("./test_scripts")
   .then((res) => {
     let x = [];
     let y = [];
+    let fileNames = [];
     const nameLengthCounts = {};
 
     res.map(async (file, index) => {
@@ -38,6 +39,7 @@ getFileList("./test_scripts")
         if (data.length > 0) {
           x.push(data[0]);
           y.push(data[1]);
+          fileNames.push(file.toString());
         }
         // console.log("whatt", data[2]);
 
@@ -68,10 +70,13 @@ getFileList("./test_scripts")
           for (let i = 0; i < x.length; i++) {
             const loc = x[i].toString();
             const methods = y[i].toString();
+            const fileName = fileNames[i];
 
             fs.appendFileSync("./results_methods_per_loc.csv", loc);
             fs.appendFileSync("./results_methods_per_loc.csv", ",");
             fs.appendFileSync("./results_methods_per_loc.csv", methods);
+            fs.appendFileSync("./results_methods_per_loc.csv", ",");
+            fs.appendFileSync("./results_methods_per_loc.csv", fileName);
             fs.appendFileSync("./results_methods_per_loc.csv", "\n");
           }
 
