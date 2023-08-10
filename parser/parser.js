@@ -124,7 +124,7 @@ const generateMethodNames = async (fileDirectory) => {
           functionTypes.includes(node.init.type)
         ) {
           if (node.init.id != null) {
-            names.push(node.init.id);
+            names.push(node.init.id.name);
             lines.push(meta.start.line);
             count++;
           } else if (node.id && node.id.name != null) {
@@ -142,7 +142,11 @@ const generateMethodNames = async (fileDirectory) => {
           functionTypes.includes(node.right.type)
         ) {
           if (node.right.id != null) {
-            names.push(node.right.id);
+            if (node.left.property.name == "onopen") {
+              console.log("onSocketOpen");
+              console.log(node);
+            }
+            names.push(node.right.id.name);
             lines.push(meta.start.line);
             count++;
           } else if (node.left.property.name != null) {
@@ -156,6 +160,10 @@ const generateMethodNames = async (fileDirectory) => {
           node.id.name &&
           node.id.name != null
         ) {
+          if (node.id.name == "onSocketOpen") {
+            console.log("onSocketOpen");
+            console.log(node);
+          }
           names.push(node.id.name);
           lines.push(meta.start.line);
           count++;
@@ -167,7 +175,8 @@ const generateMethodNames = async (fileDirectory) => {
     return [];
   }
 
-  names.map((name) => console.log(name));
+  // console.log(fileDirectory);
+  // names.map((name) => console.log(name));
 
   lineCount = fileContent.split("\n").length;
 
