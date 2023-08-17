@@ -1,17 +1,17 @@
-const generateMethodNames = require("./parser/parser");
-const getFileList = require("./parser/fileReader");
+const generateMethodNames = require("./parser");
+const getFileList = require("./fileReader");
 
 const fs = require("fs");
 const path = require("path");
 
-fs.readdir("./", (err, files) => {
+fs.readdir("./results/", (err, files) => {
   if (err) {
     console.error("Error reading directory:", err);
     return;
   }
 
   files.forEach((file) => {
-    const filePath = path.join("./", file);
+    const filePath = path.join("./results/", file);
 
     // Check if the file has the specified extension
     if (path.extname(file) === ".csv" || path.extname(file) === ".jpeg") {
@@ -26,7 +26,7 @@ fs.readdir("./", (err, files) => {
   });
 });
 
-getFileList("./test_scripts")
+getFileList("./parser/test_scripts")
   .then((res) => {
     let x = [];
     let y = [];
@@ -34,14 +34,12 @@ getFileList("./test_scripts")
     const nameLengthCounts = {};
 
     res.map(async (file, index) => {
-      // console.log(file);
       await generateMethodNames(file).then((data) => {
         if (data.length > 0) {
           x.push(data[0]);
           y.push(data[1]);
           fileNames.push(file.toString());
         }
-        // console.log("whatt", data[2]);
 
         if (data[2]) {
           for (let i = 0; i < data[2].length; i++) {
@@ -51,14 +49,17 @@ getFileList("./test_scripts")
             const fileName = file.toString();
             const lineNumber = data[3][i].toString();
 
-            fs.appendFileSync("./results_method_names.csv", methodName);
-            fs.appendFileSync("./results_method_names.csv", ",");
-            fs.appendFileSync("./results_method_names.csv", methodNameLength);
-            fs.appendFileSync("./results_method_names.csv", ",");
-            fs.appendFileSync("./results_method_names.csv", fileName);
-            fs.appendFileSync("./results_method_names.csv", ",");
-            fs.appendFileSync("./results_method_names.csv", lineNumber);
-            fs.appendFileSync("./results_method_names.csv", "\n");
+            fs.appendFileSync("./results/results_method_names.csv", methodName);
+            fs.appendFileSync("./results/results_method_names.csv", ",");
+            fs.appendFileSync(
+              "./results/results_method_names.csv",
+              methodNameLength
+            );
+            fs.appendFileSync("./results/results_method_names.csv", ",");
+            fs.appendFileSync("./results/results_method_names.csv", fileName);
+            fs.appendFileSync("./results/results_method_names.csv", ",");
+            fs.appendFileSync("./results/results_method_names.csv", lineNumber);
+            fs.appendFileSync("./results/results_method_names.csv", "\n");
 
             nameLengthCounts[length] = nameLengthCounts[length]
               ? nameLengthCounts[length] + 1
@@ -72,12 +73,15 @@ getFileList("./test_scripts")
             const methods = y[i].toString();
             const fileName = fileNames[i];
 
-            fs.appendFileSync("./results_methods_per_loc.csv", loc);
-            fs.appendFileSync("./results_methods_per_loc.csv", ",");
-            fs.appendFileSync("./results_methods_per_loc.csv", methods);
-            fs.appendFileSync("./results_methods_per_loc.csv", ",");
-            fs.appendFileSync("./results_methods_per_loc.csv", fileName);
-            fs.appendFileSync("./results_methods_per_loc.csv", "\n");
+            fs.appendFileSync("./results/results_methods_per_loc.csv", loc);
+            fs.appendFileSync("./results/results_methods_per_loc.csv", ",");
+            fs.appendFileSync("./results/results_methods_per_loc.csv", methods);
+            fs.appendFileSync("./results/results_methods_per_loc.csv", ",");
+            fs.appendFileSync(
+              "./results/results_methods_per_loc.csv",
+              fileName
+            );
+            fs.appendFileSync("./results/results_methods_per_loc.csv", "\n");
           }
 
           // console.log(nameLengthCounts);
@@ -87,12 +91,21 @@ getFileList("./test_scripts")
             const count = nameLengthCounts[length].toString();
 
             fs.appendFileSync(
-              "./results_method_name_length_counts.csv",
+              "./results/results_method_name_length_counts.csv",
               nameLength
             );
-            fs.appendFileSync("./results_method_name_length_counts.csv", ",");
-            fs.appendFileSync("./results_method_name_length_counts.csv", count);
-            fs.appendFileSync("./results_method_name_length_counts.csv", "\n");
+            fs.appendFileSync(
+              "./results/results_method_name_length_counts.csv",
+              ","
+            );
+            fs.appendFileSync(
+              "./results/results_method_name_length_counts.csv",
+              count
+            );
+            fs.appendFileSync(
+              "./results/results_method_name_length_counts.csv",
+              "\n"
+            );
           }
         }
       });

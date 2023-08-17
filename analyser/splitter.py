@@ -1,4 +1,6 @@
 import csv
+import os.path
+import sys
 from spiral import ronin
 import enchant
 import spacy
@@ -11,22 +13,22 @@ dictionary = enchant.Dict("en_US")
 natural_language_processor = spacy.load("en_core_web_sm")
 
 # output CSV file for individual word data
-words_file = open('./results_words_conventions.csv', 'w', newline='')
+words_file = open(sys.path[0] + '/../results/results_words_conventions.csv', 'w', newline='')
 words_writer = csv.writer(words_file)
 words_writer.writerow(["Method Name", "Individual Word", "Dictionary Word", "POS Tag", "Length (Characters)"])
 
 # output CSV file for entire method name data
-names_file = open('./results_method_names_conventions.csv', 'w', newline='')
+names_file = open(sys.path[0] + '/../results/results_method_names_conventions.csv', 'w', newline='')
 names_writer = csv.writer(names_file)
 names_writer.writerow(["Method Name", "Length (Words)", "Grammatical Structure", "Verb Phrase", "Full Words", "Camel Case", "Underscore Case"])
 
 # output CSV file containing method name length distribution of input repo(s)
-names_lengths_file = open('./results_method_name_length_counts_by_words.csv', 'w', newline='')
+names_lengths_file = open(sys.path[0] + '/../results/results_method_name_length_counts_by_words.csv', 'w', newline='')
 names_lengths_writer = csv.writer(names_lengths_file)
 names_lengths = {}
 
 # output CSV file containing the number of method names that follow each convention
-names_conventions_file = open('./results_method_names_conventions_counts.csv', 'w', newline='')
+names_conventions_file = open(sys.path[0] + '/../results/results_method_names_conventions_counts.csv', 'w', newline='')
 names_conventions_writer = csv.writer(names_conventions_file)
 names_grmr_struct = {}
 names_verbs = {}
@@ -37,7 +39,7 @@ names_underscore = {}
 method_names = []
 
 # read in method names from JS program output
-with open('results_method_names.csv') as csv_file:
+with open(sys.path[0] + '/../results/results_method_names.csv') as csv_file:
     csv_reader = csv.reader(csv_file, delimiter=',')
     line_count = 0
     for row in csv_reader:

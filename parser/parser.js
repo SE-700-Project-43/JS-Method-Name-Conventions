@@ -171,7 +171,6 @@ const generateMethodNames = async (fileDirectory) => {
       }
     );
   } catch (e) {
-    console.log(e);
     return [];
   }
 
