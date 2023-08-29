@@ -18,11 +18,27 @@ set grid ytics
 set style fill solid
 set title "Method Name Lengths (Words)"          
 set xlabel "Length"
-set ylabel "Count"      
+set ylabel "Count"    
 set autoscale                      
 set datafile separator ","         
 set output "./results/plot_bar_chart_method_name_lengths_by_words.jpeg"   
 plot "./results/results_method_name_length_counts_by_words.csv" using 1:2:xtic(1) with boxes title ""
+
+set boxwidth 0.8
+set xtics format ""
+set xtics rotate
+set xtic font "sans,8"
+set grid ytics
+set style fill solid
+set bmargin 10
+set title "Method Name Convention Adherence"          
+set xlabel "Convention" offset 0,5,0
+set ylabel "Percentage Followed"        
+set yrange [0:100]
+set autoscale                      
+set datafile separator ","         
+set output "./results/plot_bar_chart_method_name_convention_percent.jpeg"   
+plot "./results/results_method_names_conventions_counts.csv" using 3:xtic(1) with boxes title "", '' u 0:3:3 with labels offset 0.0,0.5 title " "
 
 set boxwidth 0.8
 set xtics format ""
@@ -36,7 +52,7 @@ set ylabel "Count (Names)"
 set autoscale                      
 set datafile separator ","         
 set output "./results/plot_bar_chart_method_name_convention_counts.jpeg"   
-plot "./results/results_method_names_conventions_counts.csv" using 2:xtic(1) with boxes title ""
+plot "./results/results_method_names_conventions_counts.csv" using 2:xtic(1) with boxes title "", '' u 0:2:2 with labels offset 0.9,0.5 title " "
 
 set xtic font "sans,6"
 set boxwidth 0.8

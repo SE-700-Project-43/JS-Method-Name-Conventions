@@ -85,14 +85,16 @@ for k,v in names_lengths.items():
     row = [k , v]
     names_lengths_writer.writerow(row)
 
-names_conventions_writer.writerow(["GRMR STRUCT TRUE", names_grmr_struct.get('True', 0)])
-names_conventions_writer.writerow(["GRMR STRUCT FALSE", names_grmr_struct.get('False', 0)])
-names_conventions_writer.writerow(["VERB PHRASE TRUE", names_verbs.get('True', 0)])
-names_conventions_writer.writerow(["VERB PHRASE FALSE", names_verbs.get('False', 0)])
-names_conventions_writer.writerow(["FULL WORDS TRUE", names_full.get('True', 0)])
-names_conventions_writer.writerow(["FULL WORDS FALSE", names_full.get('False', 0)])
-names_conventions_writer.writerow(["CAMEL CASE TRUE", names_camel.get('True', 0)])
-names_conventions_writer.writerow(["UNDERSCORE CASE TRUE", names_underscore.get('True', 0)])
+num_methods = len(method_names)
+
+names_conventions_writer.writerow(["GRMR STRUCT TRUE", names_grmr_struct.get('True', 0), round(names_grmr_struct.get('True', 0)/num_methods*100, 1)])
+names_conventions_writer.writerow(["GRMR STRUCT FALSE", names_grmr_struct.get('False', 0), round(names_grmr_struct.get('False', 0)/num_methods*100, 1)])
+names_conventions_writer.writerow(["VERB PHRASE TRUE", names_verbs.get('True', 0), round(names_verbs.get('True', 100)/num_methods*100, 1)])
+names_conventions_writer.writerow(["VERB PHRASE FALSE", names_verbs.get('False', 0), round(names_verbs.get('False', 0)/num_methods*100, 1)])
+names_conventions_writer.writerow(["FULL WORDS TRUE", names_full.get('True', 0), round(names_full.get('True', 0)/num_methods*100, 1)])
+names_conventions_writer.writerow(["FULL WORDS FALSE", names_full.get('False', 0), round(names_full.get('False', 0)/num_methods*100, 1)])
+names_conventions_writer.writerow(["CAMEL CASE TRUE", names_camel.get('True', 0), round(names_camel.get('True', 0)/num_methods*100, 1)])
+names_conventions_writer.writerow(["UNDERSCORE CASE TRUE", names_underscore.get('True', 0), round(names_underscore.get('True', 0)/num_methods*100, 1)])
 
 words_file.close()
 names_file.close()
