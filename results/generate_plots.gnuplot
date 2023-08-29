@@ -52,7 +52,7 @@ set ylabel "Count (Names)"
 set autoscale                      
 set datafile separator ","         
 set output "./results/plot_bar_chart_method_name_convention_counts.jpeg"   
-plot "./results/results_method_names_conventions_counts.csv" using 2:xtic(1) with boxes title "", '' u 0:2:2 with labels offset 0.9,0.5 title " "
+plot "./results/results_method_names_conventions_counts.csv" using 2:xtic(1) with boxes title "", '' u 0:2:2 with labels offset 0.0,0.5 title " "
 
 set xtic font "sans,6"
 set boxwidth 0.8
@@ -60,8 +60,8 @@ set xtics format ""
 set grid ytics
 set style fill solid
 set title "Method Name Lengths (Characters)"          
-set xlabel "Length"
-set ylabel "Count"      
+set xlabel "Length" offset 0,0,0
+set ylabel
 set autoscale                      
 set datafile separator ","         
 set output "./results/plot_bar_chart_method_name_lengths.jpeg"   
