@@ -112,5 +112,5 @@ getFileList("./parser/test_scripts")
     });
   })
   .catch((err) => {
-    console.log(err);
+    // console.log(err);
   });
