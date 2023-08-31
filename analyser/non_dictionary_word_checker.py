@@ -21,7 +21,7 @@ with open("./analyser/nonDictionary.txt", "r") as file:
     word = word.lower()
     total_count = total_count + 1
     if word in abbreviations:
-      abbrevaition_count = abbreviation_count + 1
+      abbreviation_count = abbreviation_count + 1
     if word in acronyms:
       acronym_count = acronym_count + 1
 
