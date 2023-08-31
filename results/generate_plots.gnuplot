@@ -30,7 +30,7 @@ set boxwidth 0.8
 set xtics rotate by -45
 set xtic font "sans,8"
 set style fill solid
-set title "Method Naming Conventions Adherence (%)"          
+set title "Method Naming Conventions Adherence (%)" font "sans,16"       
 set xlabel "Convention" offset 0,2,0
 set ylabel "Percentage of Method Names" font "sans,11" offset 1,0,0        
 set yrange [0:100]             

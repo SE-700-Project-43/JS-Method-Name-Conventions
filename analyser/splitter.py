@@ -35,6 +35,8 @@ names_verbs = {}
 names_full = {}
 names_camel = {}
 names_underscore = {}
+names_dict = {}
+names_lengths = {}
 
 method_names = []
 
@@ -54,6 +56,7 @@ for name in method_names:
 
     is_verb_phrase = False
     is_full_words = True
+    is_dictionary_terms = True
 
     # loop through each individual word within the method name and check them against the conventions
     for word in split_words:
@@ -70,8 +73,11 @@ for name in method_names:
         if len(word) == 1:
             is_full_words = False
 
+        if is_dictionary_term == "False":
+            is_dictionary_terms = False
+
     # if the method name was successfully split into one or more words then record the conventions associated with it
-    if (len(split_words) > 0):
+    if len(split_words) > 0:
         names_writer.writerow([name, len(split_words), is_grammatically_correct, is_verb_phrase, is_full_words, is_camelcase, is_underscore_case])
 
         names_lengths[len(split_words)] = names_lengths.get(len(split_words), 0) + 1 
@@ -80,6 +86,10 @@ for name in method_names:
         names_full[str(is_full_words)] = names_full.get(str(is_full_words), 0) + 1
         names_camel[str(is_camelcase)] = names_camel.get(str(is_camelcase), 0) + 1
         names_underscore[str(is_underscore_case)] = names_underscore.get(str(is_underscore_case), 0) + 1
+        names_dict[str(is_dictionary_terms)] = names_dict.get(str(is_dictionary_terms), 0) + 1
+
+        if 3 <= len(split_words) <= 7:
+            names_lengths['True'] = names_lengths.get('True', 0) + 1
 
 for k,v in names_lengths.items():
     row = [k , v]
@@ -87,14 +97,12 @@ for k,v in names_lengths.items():
 
 num_methods = len(method_names)
 
-names_conventions_writer.writerow(["GRMR STRUCT TRUE", names_grmr_struct.get('True', 0), round(names_grmr_struct.get('True', 0)/num_methods*100, 1)])
-names_conventions_writer.writerow(["GRMR STRUCT FALSE", names_grmr_struct.get('False', 0), round(names_grmr_struct.get('False', 0)/num_methods*100, 1)])
-names_conventions_writer.writerow(["VERB PHRASE TRUE", names_verbs.get('True', 0), round(names_verbs.get('True', 100)/num_methods*100, 1)])
-names_conventions_writer.writerow(["VERB PHRASE FALSE", names_verbs.get('False', 0), round(names_verbs.get('False', 0)/num_methods*100, 1)])
-names_conventions_writer.writerow(["FULL WORDS TRUE", names_full.get('True', 0), round(names_full.get('True', 0)/num_methods*100, 1)])
-names_conventions_writer.writerow(["FULL WORDS FALSE", names_full.get('False', 0), round(names_full.get('False', 0)/num_methods*100, 1)])
-names_conventions_writer.writerow(["CAMEL CASE TRUE", names_camel.get('True', 0), round(names_camel.get('True', 0)/num_methods*100, 1)])
-names_conventions_writer.writerow(["UNDERSCORE CASE TRUE", names_underscore.get('True', 0), round(names_underscore.get('True', 0)/num_methods*100, 1)])
+names_conventions_writer.writerow(["NAMING STYLE", names_camel.get('True', 0) + names_underscore.get('True', 0), round((names_camel.get('True', 0) + names_underscore.get('True', 0))/num_methods*100, 1)])
+names_conventions_writer.writerow(["GRAMMATICAL STRUCTURE", names_grmr_struct.get('True', 0), round(names_grmr_struct.get('True', 0)/num_methods*100, 1)])
+names_conventions_writer.writerow(["VERB PHRASE", names_verbs.get('True', 0), round(names_verbs.get('True', 100)/num_methods*100, 1)])
+names_conventions_writer.writerow(["DICTIONARY TERMS", names_dict.get('True', 0), round(names_dict.get('True', 0)/num_methods*100, 1)])
+names_conventions_writer.writerow(["FULL WORDS", names_full.get('True', 0), round(names_full.get('True', 0)/num_methods*100, 1)])
+names_conventions_writer.writerow(["LENGTH", names_dict.get('True', 0), round(names_dict.get('True', 0)/num_methods*100, 1)])
 
 words_file.close()
 names_file.close()
