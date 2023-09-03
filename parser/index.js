@@ -124,7 +124,7 @@ function parseFiles() {
                 ","
               );
               fs.appendFileSync(
-                "./results/results_methods_per_loc.csv",
+                `./results/${repoName}_results_methods_per_loc.csv`,
                 fileName
               );
               fs.appendFileSync(
