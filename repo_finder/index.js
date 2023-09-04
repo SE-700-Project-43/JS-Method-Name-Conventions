@@ -7,7 +7,7 @@ const date = args[0];
 const fs = require("fs");
 
 fetch(
-  `https://api.github.com/search/repositories?q=%20created:<${date}%20language:JavaScript&per_page=100`
+  `https://api.github.com/search/repositories?q=%20created:<${date}%20language:JavaScript&per_page=10`
 )
   .then((res) => res.json())
   .then((data) => {

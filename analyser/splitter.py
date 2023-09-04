@@ -1,11 +1,9 @@
 import csv
-import os.path
 import sys
 from spiral import ronin
 import enchant
 import spacy
 from naming_style_check import check_grammatical_structure, check_camel_case, check_underscore_case
-
 
 args = sys.argv
 repo_name = args[1]
@@ -31,6 +29,9 @@ names_lengths_file = open(sys.path[0] + '/../results/' + repo_name + '_results_m
 names_lengths_writer = csv.writer(names_lengths_file)
 names_lengths = {}
 
+# output text file containing non-dictionary words
+names_non_dict_file = open(sys.path[0] + '/../analyser/nonDictionary.txt', 'w')
+
 # output CSV file containing the number of method names that follow each convention
 names_conventions_file = open(sys.path[0] + '/../results/' + repo_name + '_results_method_names_conventions_counts.csv', 'w', newline='')
 names_conventions_writer = csv.writer(names_conventions_file)
@@ -40,7 +41,7 @@ names_full = {}
 names_camel = {}
 names_underscore = {}
 names_dict = {}
-names_lengths = {}
+names_length = {}
 
 method_names = []
 
@@ -78,6 +79,8 @@ for name in method_names:
             is_full_words = False
 
         if is_dictionary_term == "False":
+            names_non_dict_file.write(word)
+            names_non_dict_file.write("\n")
             is_dictionary_terms = False
 
     # if the method name was successfully split into one or more words then record the conventions associated with it
@@ -93,7 +96,7 @@ for name in method_names:
         names_dict[str(is_dictionary_terms)] = names_dict.get(str(is_dictionary_terms), 0) + 1
 
         if 3 <= len(split_words) <= 7:
-            names_lengths['True'] = names_lengths.get('True', 0) + 1
+            names_length['True'] = names_length.get('True', 0) + 1
 
 for k,v in names_lengths.items():
     row = [k , v]
@@ -106,7 +109,7 @@ names_conventions_writer.writerow(["GRAMMATICAL STRUCTURE", names_grmr_struct.ge
 names_conventions_writer.writerow(["VERB PHRASE", names_verbs.get('True', 0), round(names_verbs.get('True', 100)/num_methods*100, 1)])
 names_conventions_writer.writerow(["DICTIONARY TERMS", names_dict.get('True', 0), round(names_dict.get('True', 0)/num_methods*100, 1)])
 names_conventions_writer.writerow(["FULL WORDS", names_full.get('True', 0), round(names_full.get('True', 0)/num_methods*100, 1)])
-names_conventions_writer.writerow(["LENGTH", names_dict.get('True', 0), round(names_dict.get('True', 0)/num_methods*100, 1)])
+names_conventions_writer.writerow(["LENGTH", names_length.get('True', 0), round(names_length.get('True', 0)/num_methods*100, 1)])
 
 words_file.close()
 names_file.close()
