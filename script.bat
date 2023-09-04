@@ -21,8 +21,8 @@ gnuplot.exe -c ./results/generate_plots.gnuplot %file_name%
 
 ECHO Plotting Done
 
-SET dir = './parser/test_scripts/' and %file_name%
+SET dir=./parser/test_scripts/%file_name%
 
 ECHO Deleting Repo
-node "./parser/deleteDir.js" dir
+node "./parser/deleteDir.js" %dir%
 ECHO Repo Deleted
