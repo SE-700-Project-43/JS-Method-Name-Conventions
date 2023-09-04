@@ -1,0 +1,8 @@
+{
+  "types": "module",
+  "dependencies": {
+    "acorn": "^8.8.2",
+    "esprima": "^4.0.1",
+    "node-fetch": "^2.7.0"
+  }
+}
