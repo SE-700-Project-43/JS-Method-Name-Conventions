@@ -2,6 +2,7 @@
   "types": "module",
   "dependencies": {
     "acorn": "^8.8.2",
+    "dotenv": "^16.3.1",
     "esprima": "^4.0.1",
     "node-fetch": "^2.7.0",
     "shelljs": "^0.8.5"
