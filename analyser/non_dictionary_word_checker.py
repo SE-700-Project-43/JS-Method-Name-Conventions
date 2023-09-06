@@ -19,7 +19,7 @@ acronym_count = 0
 abbreviation_count = 0
 total_count = 0
 
-with open("./analyser/nonDictionary.txt", "r") as file:
+with open("./results/" + repo_name + "_results_non_dictionary.txt", "r") as file:
   for word in file:
     word = word.lower()
     total_count = total_count + 1

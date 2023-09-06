@@ -30,7 +30,7 @@ names_lengths_writer = csv.writer(names_lengths_file)
 names_lengths = {}
 
 # output text file containing non-dictionary words
-names_non_dict_file = open(sys.path[0] + '/../analyser/nonDictionary.txt', 'w')
+names_non_dict_file = open(sys.path[0] + '/../results/' + repo_name + '_results_non_dictionary.txt', 'w')
 
 # output CSV file containing the number of method names that follow each convention
 names_conventions_file = open(sys.path[0] + '/../results/' + repo_name + '_results_method_names_conventions_counts.csv', 'w', newline='')
@@ -42,6 +42,7 @@ names_camel = {}
 names_underscore = {}
 names_dict = {}
 names_length = {}
+names_non_dict = []
 
 method_names = []
 
@@ -79,8 +80,8 @@ for name in method_names:
             is_full_words = False
 
         if is_dictionary_term == "False":
-            names_non_dict_file.write(word)
-            names_non_dict_file.write("\n")
+            if word not in names_non_dict:
+                names_non_dict.append(word)
             is_dictionary_terms = False
 
     # if the method name was successfully split into one or more words then record the conventions associated with it
@@ -101,6 +102,10 @@ for name in method_names:
 for k,v in names_lengths.items():
     row = [k , v]
     names_lengths_writer.writerow(row)
+
+for word in names_non_dict:
+    names_non_dict_file.write(word)
+    names_non_dict_file.write("\n")
 
 num_methods = len(method_names)
 
