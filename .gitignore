@@ -149,5 +149,6 @@ package-lock.json
 # output files
 *.csv
 *.jpeg
+.results/*.txt
 
 # End of https://www.toptal.com/developers/gitignore/api/node
