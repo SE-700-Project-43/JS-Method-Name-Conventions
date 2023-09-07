@@ -80,8 +80,8 @@ for name in method_names:
             is_full_words = False
 
         if is_dictionary_term == "False":
-            if word not in names_non_dict:
-                names_non_dict.append(word)
+            if word.lower() not in names_non_dict:
+                names_non_dict.append(word.lower())
             is_dictionary_terms = False
 
     # if the method name was successfully split into one or more words then record the conventions associated with it
