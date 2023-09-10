@@ -86,6 +86,30 @@ async function processLineByLine() {
       return 2023 - year;
     });
 
+    size = usernames.length;
+    experience = 0;
+
+    ages.map((age) => {
+      experience += age;
+    });
+
+    experience = experience / size;
+
+    fs.appendFileSync(
+      `./results/${repoName}_results_experience_and_size.txt`,
+      round(experience.toString(), 1)
+    );
+
+    fs.appendFileSync(
+      `./results/${repoName}_results_experience_and_size.txt`,
+      "\n"
+    );
+
+    fs.appendFileSync(
+      `./results/${repoName}_results_experience_and_size.txt`,
+      size.toString()
+    );
+
     cloneRepo(line);
 
     shell.cd(path);

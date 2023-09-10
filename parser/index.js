@@ -1,5 +1,5 @@
 const generateMethodNames = require("./parser");
-const getFileList = require("./fileReader");
+const { getFileList } = require("./fileReader");
 
 const fs = require("fs");
 const path = require("path");
