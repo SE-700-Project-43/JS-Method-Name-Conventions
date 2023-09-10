@@ -21,7 +21,7 @@ total_count = 0
 
 with open("./results/" + repo_name + "_results_non_dictionary.txt", "r") as file:
   for word in file:
-    word = word.lower()
+    word = word.lower().strip()
     total_count = total_count + 1
     if word in abbreviations:
       abbreviation_count = abbreviation_count + 1
