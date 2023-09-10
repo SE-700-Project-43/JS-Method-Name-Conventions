@@ -95,9 +95,14 @@ async function processLineByLine() {
 
     experience = experience / size;
 
+    fs.writeFileSync(
+      `./results/${repoName}_results_experience_and_size.txt`,
+      ""
+    );
+
     fs.appendFileSync(
       `./results/${repoName}_results_experience_and_size.txt`,
-      round(experience.toString(), 1)
+      Math.round(experience, 1).toString()
     );
 
     fs.appendFileSync(
