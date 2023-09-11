@@ -1,11 +1,12 @@
 @echo off
-set date=%1
+set startDate=%1
+set endDate=%2
 
 node "./parser/deleteDir.js" ./repo_finder/repo_names.txt
 
-ECHO Finding Repos Created Before %date%
+ECHO Finding Repos Created Between %startDate% and %endDate%
 
-node ./repo_finder/index.js %date%
+node ./repo_finder/index.js %startDate% %endDate%
 
 ECHO Repos Found
 

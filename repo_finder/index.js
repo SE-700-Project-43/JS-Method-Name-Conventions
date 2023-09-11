@@ -2,12 +2,13 @@ const fetch = require("node-fetch");
 
 var args = process.argv.slice(2);
 
-const date = args[0];
+const startDate = args[0];
+const endDate = args[1];
 
 const fs = require("fs");
 
 fetch(
-  `https://api.github.com/search/repositories?q=%20created:<${date}%20language:JavaScript&per_page=10`
+  `https://api.github.com/search/repositories?q=%20created:${startDate}..${endDate}%20language:JavaScript&per_page=10`
 )
   .then((res) => res.json())
   .then((data) => {
