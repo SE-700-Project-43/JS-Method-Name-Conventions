@@ -96,7 +96,7 @@ for name in method_names:
         names_underscore[str(is_underscore_case)] = names_underscore.get(str(is_underscore_case), 0) + 1
         names_dict[str(is_dictionary_terms)] = names_dict.get(str(is_dictionary_terms), 0) + 1
 
-        if 3 <= len(split_words) <= 7:
+        if len(split_words) <= 8:
             names_length['True'] = names_length.get('True', 0) + 1
 
 for k,v in names_lengths.items():
