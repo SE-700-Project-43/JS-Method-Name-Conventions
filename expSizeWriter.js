@@ -1,3 +1,4 @@
+const { totalmem } = require("os");
 const { getAllFiles } = require("./parser/fileReader");
 const fs = require("fs");
 
@@ -124,6 +125,18 @@ function writeFile(file, array) {
   }
 }
 
+function calculateAvg(array) {
+  total = 0;
+  count = 0;
+
+  for (const key in array) {
+    total += Number(array[key][1]);
+    count += 1;
+  }
+
+  return (total / count).toFixed(1);
+}
+
 (async () => {
   await parseFiles();
 
@@ -147,4 +160,39 @@ function writeFile(file, array) {
   writeFile("./results/experience_size_length.csv", length);
   writeFile("./results/experience_size_abbreviations.csv", abbreviations);
   writeFile("./results/experience_size_acronyms.csv", acronyms);
+
+  fs.writeFileSync("./results/overall_averages.csv", "");
+
+  fs.appendFileSync(
+    "./results/overall_averages.csv",
+    calculateAvg(namingStyle) + "\n"
+  );
+  fs.appendFileSync(
+    "./results/overall_averages.csv",
+    calculateAvg(grammaticalStructure) + "\n"
+  );
+  fs.appendFileSync(
+    "./results/overall_averages.csv",
+    calculateAvg(verbPhrase) + "\n"
+  );
+  fs.appendFileSync(
+    "./results/overall_averages.csv",
+    calculateAvg(dictionaryTerms) + "\n"
+  );
+  fs.appendFileSync(
+    "./results/overall_averages.csv",
+    calculateAvg(fullWords) + "\n"
+  );
+  fs.appendFileSync(
+    "./results/overall_averages.csv",
+    calculateAvg(length) + "\n"
+  );
+  fs.appendFileSync(
+    "./results/overall_averages.csv",
+    calculateAvg(abbreviations) + "\n"
+  );
+  fs.appendFileSync(
+    "./results/overall_averages.csv",
+    calculateAvg(acronyms) + "\n"
+  );
 })();
