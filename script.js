@@ -102,7 +102,7 @@ async function processLineByLine() {
 
     fs.appendFileSync(
       `./results/${repoName}_results_experience_and_size.txt`,
-      Math.round(experience, 1).toString()
+      experience.toFixed(1)
     );
 
     fs.appendFileSync(
