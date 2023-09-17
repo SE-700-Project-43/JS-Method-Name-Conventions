@@ -68,7 +68,7 @@ async function processLineByLine() {
       `https://api.github.com/repos/${ownerName}/${gitRepoName.replace(
         ".git",
         ""
-      )}/contributors`,
+      )}/contributors?per_page=100`,
       password
     );
 
