@@ -1,5 +1,6 @@
 @echo off
 set file_name=%1
+set owner_name=%2
 
 node "./parser/deleteDir.js" ./analyser/nonDictionary.txt
 
@@ -17,7 +18,7 @@ python -u "./analyser/non_dictionary_word_checker.py" %file_name%
 ECHO Analysis Done
 ECHO Plotting Starting
 
-gnuplot.exe -c ./results/generate_plots.gnuplot %file_name% 
+gnuplot.exe -c ./results/generate_plots.gnuplot %file_name% %owner_name%
 
 ECHO Plotting Done
 

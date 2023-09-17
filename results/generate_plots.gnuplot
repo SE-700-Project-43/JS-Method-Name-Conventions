@@ -1,5 +1,10 @@
 set terminal jpeg enhanced font 12
 
+stats  './results/'.ARG1.'_results_total_methods_loc.csv' u 1 every ::(0)::(0) nooutput
+num_methods=sprintf("%d", STATS_min)
+stats './results/'.ARG1.'_results_total_methods_loc.csv' u 1 every ::(1)::(1) nooutput
+loc=sprintf("%d", STATS_min)
+
 set title font "sans,20"
 set xlabel font "sans,16"
 set ylabel font "sans,16"
@@ -12,6 +17,8 @@ set autoscale
 set ylabel "Methods per File"     
 set yrange [0:*] 
 set datafile separator ","         
+unset label
+set label 'Repo Name: '.ARG2.'/'.ARG1.' | Methods: '.num_methods.' | '.'LoC: '.loc at graph 1,1.025 right
 set output "./results/".ARG1."_plot_scatter_methods_to_loc.jpeg"   
 plot "./results/".ARG1."_results_methods_per_loc.csv" title "" pt 7 ps 1 linecolor rgb "#2998D4"
 

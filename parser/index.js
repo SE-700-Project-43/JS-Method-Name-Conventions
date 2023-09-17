@@ -46,6 +46,9 @@ function parseFiles() {
       let fileNames = [];
       const nameLengthCounts = {};
 
+      totalNumMethods = 0;
+      totalLOC = 0;
+
       res.map(async (file, index) => {
         await generateMethodNames(file).then((data) => {
           if (data.length > 0) {
@@ -107,6 +110,9 @@ function parseFiles() {
               const methods = y[i].toString();
               const fileName = fileNames[i];
 
+              totalLOC += x[i];
+              totalNumMethods += y[i];
+
               fs.appendFileSync(
                 `./results/${repoName}_results_methods_per_loc.csv`,
                 loc
@@ -132,6 +138,19 @@ function parseFiles() {
                 "\n"
               );
             }
+
+            fs.writeFileSync(
+              `./results/${repoName}_results_total_methods_loc.csv`,
+              ""
+            );
+            fs.appendFileSync(
+              `./results/${repoName}_results_total_methods_loc.csv`,
+              totalNumMethods.toString() + "\n"
+            );
+            fs.appendFileSync(
+              `./results/${repoName}_results_total_methods_loc.csv`,
+              totalLOC.toString()
+            );
 
             // console.log(nameLengthCounts);
 

@@ -118,7 +118,7 @@ async function processLineByLine() {
     cloneRepo(line);
 
     shell.cd(path);
-    shell.exec(`script.bat ${repoName}`);
+    shell.exec(`script.bat ${repoName} ${ownerName}`);
   }
 }
 
