@@ -47,7 +47,7 @@ names_non_dict = []
 method_names = []
 
 # read in method names from JS program output
-with open(sys.path[0] + '/../results/' + repo_name + '_results_method_names.csv') as csv_file:
+with open(sys.path[0] + '/../results/' + repo_name + '_results_method_names.csv', encoding="utf8") as csv_file:
     csv_reader = csv.reader(csv_file, delimiter=',')
     line_count = 0
     for row in csv_reader:
