@@ -111,7 +111,7 @@ num_methods = len(method_names)
 
 names_conventions_writer.writerow(["NAMING STYLE", names_camel.get('True', 0) + names_underscore.get('True', 0), round((names_camel.get('True', 0) + names_underscore.get('True', 0))/num_methods*100, 1)])
 names_conventions_writer.writerow(["GRAMMATICAL STRUCTURE", names_grmr_struct.get('True', 0), round(names_grmr_struct.get('True', 0)/num_methods*100, 1)])
-names_conventions_writer.writerow(["VERB PHRASE", names_verbs.get('True', 0), round(names_verbs.get('True', 100)/num_methods*100, 1)])
+names_conventions_writer.writerow(["VERB PHRASE", names_verbs.get('True', 0), round(names_verbs.get('True', 0)/num_methods*100, 1)])
 names_conventions_writer.writerow(["DICTIONARY TERMS", names_dict.get('True', 0), round(names_dict.get('True', 0)/num_methods*100, 1)])
 names_conventions_writer.writerow(["FULL WORDS", names_full.get('True', 0), round(names_full.get('True', 0)/num_methods*100, 1)])
 names_conventions_writer.writerow(["LENGTH", names_length.get('True', 0), round(names_length.get('True', 0)/num_methods*100, 1)])
