@@ -1,6 +1,7 @@
 const { totalmem } = require("os");
 const { getAllFiles } = require("./parser/fileReader");
 const fs = require("fs");
+const stats = require("statistics.js");
 
 namingStyle = {};
 grammaticalStructure = {};
@@ -45,8 +46,11 @@ if (fs.existsSync("./results/experience_naming_style.csv")) {
   readCounts("./results/experience_size_acronyms.csv", acronyms);
 }
 
-function addStat(name, split, convention, array) {
+function addStat(name, split, convention, array, experience, size) {
   if (split[0] == convention) {
+    if (isNaN(experience)) {
+      experience = 0;
+    }
     array[name.toString()] = [split[1], split[2], experience, size];
   }
 }
@@ -70,7 +74,11 @@ async function parseFiles() {
               "./results/" + name + "_results_experience_and_size.txt",
               "utf8"
             );
-            const experienceAndSizeLines = experienceAndSize.split("\n");
+            var experienceAndSizeLines = experienceAndSize.split("\r\n");
+
+            if (experienceAndSizeLines.length != 2) {
+              experienceAndSizeLines = experienceAndSize.split("\n");
+            }
 
             experience = experienceAndSizeLines[0];
             size = experienceAndSizeLines[1];
@@ -83,19 +91,49 @@ async function parseFiles() {
               if (line != "") {
                 split = line.split(",");
 
-                addStat(name, split, "NAMING STYLE", namingStyle);
+                addStat(
+                  name,
+                  split,
+                  "NAMING STYLE",
+                  namingStyle,
+                  experience,
+                  size
+                );
                 addStat(
                   name,
                   split,
                   "GRAMMATICAL STRUCTURE",
-                  grammaticalStructure
+                  grammaticalStructure,
+                  experience,
+                  size
                 );
-                addStat(name, split, "VERB PHRASE", verbPhrase);
-                addStat(name, split, "DICTIONARY TERMS", dictionaryTerms);
-                addStat(name, split, "FULL WORDS", fullWords);
-                addStat(name, split, "LENGTH", length);
-                addStat(name, split, "ABBREVIATIONS", abbreviations);
-                addStat(name, split, "ACRONYMS", acronyms);
+                addStat(
+                  name,
+                  split,
+                  "VERB PHRASE",
+                  verbPhrase,
+                  experience,
+                  size
+                );
+                addStat(
+                  name,
+                  split,
+                  "DICTIONARY TERMS",
+                  dictionaryTerms,
+                  experience,
+                  size
+                );
+                addStat(name, split, "FULL WORDS", fullWords, experience, size);
+                addStat(name, split, "LENGTH", length, experience, size);
+                addStat(
+                  name,
+                  split,
+                  "ABBREVIATIONS",
+                  abbreviations,
+                  experience,
+                  size
+                );
+                addStat(name, split, "ACRONYMS", acronyms, experience, size);
               }
             });
           }
@@ -135,6 +173,37 @@ function calculateAvg(array) {
   }
 
   return (total / count).toFixed(1);
+}
+
+function calculateCorrelation(array) {
+  var experience = [];
+  var size = [];
+
+  for (const key in array) {
+    experience.push({
+      exp: Number(array[key][2]),
+      conv: Number(array[key][1]),
+    });
+    size.push({ size: Number(array[key][3]), conv: Number(array[key][1]) });
+  }
+
+  var expVars = {
+    exp: "metric",
+    conv: "metric",
+  };
+
+  var sizeVars = {
+    size: "metric",
+    conv: "metric",
+  };
+
+  var s = new stats.Statistics(experience, expVars);
+  var r = s.correlationCoefficient("exp", "conv");
+  console.log(r);
+
+  var s = new stats.Statistics(size, sizeVars);
+  var r = s.correlationCoefficient("size", "conv");
+  console.log(r);
 }
 
 (async () => {
@@ -195,4 +264,6 @@ function calculateAvg(array) {
     "./results/overall_averages.csv",
     calculateAvg(acronyms) + "\n"
   );
+
+  calculateCorrelation(namingStyle);
 })();
