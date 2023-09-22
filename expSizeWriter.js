@@ -198,12 +198,12 @@ function calculateCorrelation(array) {
   };
 
   var s = new stats.Statistics(experience, expVars);
-  var r = s.correlationCoefficient("exp", "conv");
-  console.log(r);
+  var expR = s.correlationCoefficient("exp", "conv");
 
   var s = new stats.Statistics(size, sizeVars);
-  var r = s.correlationCoefficient("size", "conv");
-  console.log(r);
+  var sizeR = s.correlationCoefficient("size", "conv");
+
+  return [expR.correlationCoefficient, sizeR.correlationCoefficient];
 }
 
 (async () => {
@@ -232,38 +232,98 @@ function calculateCorrelation(array) {
 
   fs.writeFileSync("./results/overall_averages.csv", "");
 
-  fs.appendFileSync(
-    "./results/overall_averages.csv",
-    calculateAvg(namingStyle) + "\n"
-  );
-  fs.appendFileSync(
-    "./results/overall_averages.csv",
-    calculateAvg(grammaticalStructure) + "\n"
-  );
-  fs.appendFileSync(
-    "./results/overall_averages.csv",
-    calculateAvg(verbPhrase) + "\n"
-  );
-  fs.appendFileSync(
-    "./results/overall_averages.csv",
-    calculateAvg(dictionaryTerms) + "\n"
-  );
-  fs.appendFileSync(
-    "./results/overall_averages.csv",
-    calculateAvg(fullWords) + "\n"
-  );
-  fs.appendFileSync(
-    "./results/overall_averages.csv",
-    calculateAvg(length) + "\n"
-  );
-  fs.appendFileSync(
-    "./results/overall_averages.csv",
-    calculateAvg(abbreviations) + "\n"
-  );
-  fs.appendFileSync(
-    "./results/overall_averages.csv",
-    calculateAvg(acronyms) + "\n"
-  );
+  var cor = calculateCorrelation(namingStyle);
+  namingStyleExpCor = cor[0];
+  namingStyleSizeCor = cor[1];
 
-  calculateCorrelation(namingStyle);
+  var cor = calculateCorrelation(grammaticalStructure);
+  grammaticalStructureExpCor = cor[0];
+  grammaticalStructureSizeCor = cor[1];
+
+  var cor = calculateCorrelation(verbPhrase);
+  verbPhraseExpCor = cor[0];
+  verbPhraseSizeCor = cor[1];
+
+  var cor = calculateCorrelation(dictionaryTerms);
+  dictionaryTermsExpCor = cor[0];
+  dictionaryTermsSizeCor = cor[1];
+
+  var cor = calculateCorrelation(fullWords);
+  fullWordsExpCor = cor[0];
+  fullWordsSizeCor = cor[1];
+
+  var cor = calculateCorrelation(length);
+  lengthExpCor = cor[0];
+  lengthSizeCor = cor[1];
+
+  var cor = calculateCorrelation(abbreviations);
+  abbreviationsExpCor = cor[0];
+  abbreviationsSizeCor = cor[1];
+
+  var cor = calculateCorrelation(acronyms);
+  acronymsExpCor = cor[0];
+  acronymsSizeCor = cor[1];
+
+  fs.appendFileSync(
+    "./results/overall_averages.csv",
+    calculateAvg(namingStyle) +
+      "," +
+      namingStyleExpCor +
+      "," +
+      namingStyleSizeCor +
+      "\n"
+  );
+  fs.appendFileSync(
+    "./results/overall_averages.csv",
+    calculateAvg(grammaticalStructure) +
+      "," +
+      grammaticalStructureExpCor +
+      "," +
+      grammaticalStructureSizeCor +
+      "\n"
+  );
+  fs.appendFileSync(
+    "./results/overall_averages.csv",
+    calculateAvg(verbPhrase) +
+      "," +
+      verbPhraseExpCor +
+      "," +
+      verbPhraseSizeCor +
+      "\n"
+  );
+  fs.appendFileSync(
+    "./results/overall_averages.csv",
+    calculateAvg(dictionaryTerms) +
+      "," +
+      dictionaryTermsExpCor +
+      "," +
+      dictionaryTermsSizeCor +
+      "\n"
+  );
+  fs.appendFileSync(
+    "./results/overall_averages.csv",
+    calculateAvg(fullWords) +
+      "," +
+      fullWordsExpCor +
+      "," +
+      fullWordsSizeCor +
+      "\n"
+  );
+  fs.appendFileSync(
+    "./results/overall_averages.csv",
+    calculateAvg(length) + "," + lengthExpCor + "," + lengthSizeCor + "\n"
+  );
+  fs.appendFileSync(
+    "./results/overall_averages.csv",
+    calculateAvg(abbreviations) +
+      "," +
+      abbreviationsExpCor +
+      "," +
+      abbreviationsSizeCor +
+      "\n"
+  );
+  fs.appendFileSync(
+    "./results/overall_averages.csv",
+    calculateAvg(acronyms) + "," + acronymsExpCor + "," + acronymsSizeCor + "\n"
+  );
 })();
