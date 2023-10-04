@@ -1,6 +1,7 @@
 const { totalmem } = require("os");
 const { getAllFiles } = require("./parser/fileReader");
 const fs = require("fs");
+const stats = require("statistics.js");
 
 namingStyle = {};
 grammaticalStructure = {};
@@ -45,8 +46,11 @@ if (fs.existsSync("./results/experience_naming_style.csv")) {
   readCounts("./results/experience_size_acronyms.csv", acronyms);
 }
 
-function addStat(name, split, convention, array) {
+function addStat(name, split, convention, array, experience, size) {
   if (split[0] == convention) {
+    if (isNaN(experience)) {
+      experience = 0;
+    }
     array[name.toString()] = [split[1], split[2], experience, size];
   }
 }
@@ -70,7 +74,11 @@ async function parseFiles() {
               "./results/" + name + "_results_experience_and_size.txt",
               "utf8"
             );
-            const experienceAndSizeLines = experienceAndSize.split("\n");
+            var experienceAndSizeLines = experienceAndSize.split("\r\n");
+
+            if (experienceAndSizeLines.length != 2) {
+              experienceAndSizeLines = experienceAndSize.split("\n");
+            }
 
             experience = experienceAndSizeLines[0];
             size = experienceAndSizeLines[1];
@@ -83,19 +91,49 @@ async function parseFiles() {
               if (line != "") {
                 split = line.split(",");
 
-                addStat(name, split, "NAMING STYLE", namingStyle);
+                addStat(
+                  name,
+                  split,
+                  "NAMING STYLE",
+                  namingStyle,
+                  experience,
+                  size
+                );
                 addStat(
                   name,
                   split,
                   "GRAMMATICAL STRUCTURE",
-                  grammaticalStructure
+                  grammaticalStructure,
+                  experience,
+                  size
                 );
-                addStat(name, split, "VERB PHRASE", verbPhrase);
-                addStat(name, split, "DICTIONARY TERMS", dictionaryTerms);
-                addStat(name, split, "FULL WORDS", fullWords);
-                addStat(name, split, "LENGTH", length);
-                addStat(name, split, "ABBREVIATIONS", abbreviations);
-                addStat(name, split, "ACRONYMS", acronyms);
+                addStat(
+                  name,
+                  split,
+                  "VERB PHRASE",
+                  verbPhrase,
+                  experience,
+                  size
+                );
+                addStat(
+                  name,
+                  split,
+                  "DICTIONARY TERMS",
+                  dictionaryTerms,
+                  experience,
+                  size
+                );
+                addStat(name, split, "FULL WORDS", fullWords, experience, size);
+                addStat(name, split, "LENGTH", length, experience, size);
+                addStat(
+                  name,
+                  split,
+                  "ABBREVIATIONS",
+                  abbreviations,
+                  experience,
+                  size
+                );
+                addStat(name, split, "ACRONYMS", acronyms, experience, size);
               }
             });
           }
@@ -137,6 +175,37 @@ function calculateAvg(array) {
   return (total / count).toFixed(1);
 }
 
+function calculateCorrelation(array) {
+  var experience = [];
+  var size = [];
+
+  for (const key in array) {
+    experience.push({
+      exp: Number(array[key][2]),
+      conv: Number(array[key][1]),
+    });
+    size.push({ size: Number(array[key][3]), conv: Number(array[key][1]) });
+  }
+
+  var expVars = {
+    exp: "metric",
+    conv: "metric",
+  };
+
+  var sizeVars = {
+    size: "metric",
+    conv: "metric",
+  };
+
+  var s = new stats.Statistics(experience, expVars);
+  var expR = s.correlationCoefficient("exp", "conv");
+
+  var s = new stats.Statistics(size, sizeVars);
+  var sizeR = s.correlationCoefficient("size", "conv");
+
+  return [expR.correlationCoefficient, sizeR.correlationCoefficient];
+}
+
 (async () => {
   await parseFiles();
 
@@ -163,36 +232,98 @@ function calculateAvg(array) {
 
   fs.writeFileSync("./results/overall_averages.csv", "");
 
+  var cor = calculateCorrelation(namingStyle);
+  namingStyleExpCor = cor[0];
+  namingStyleSizeCor = cor[1];
+
+  var cor = calculateCorrelation(grammaticalStructure);
+  grammaticalStructureExpCor = cor[0];
+  grammaticalStructureSizeCor = cor[1];
+
+  var cor = calculateCorrelation(verbPhrase);
+  verbPhraseExpCor = cor[0];
+  verbPhraseSizeCor = cor[1];
+
+  var cor = calculateCorrelation(dictionaryTerms);
+  dictionaryTermsExpCor = cor[0];
+  dictionaryTermsSizeCor = cor[1];
+
+  var cor = calculateCorrelation(fullWords);
+  fullWordsExpCor = cor[0];
+  fullWordsSizeCor = cor[1];
+
+  var cor = calculateCorrelation(length);
+  lengthExpCor = cor[0];
+  lengthSizeCor = cor[1];
+
+  var cor = calculateCorrelation(abbreviations);
+  abbreviationsExpCor = cor[0];
+  abbreviationsSizeCor = cor[1];
+
+  var cor = calculateCorrelation(acronyms);
+  acronymsExpCor = cor[0];
+  acronymsSizeCor = cor[1];
+
   fs.appendFileSync(
     "./results/overall_averages.csv",
-    calculateAvg(namingStyle) + "\n"
+    calculateAvg(namingStyle) +
+      "," +
+      namingStyleExpCor +
+      "," +
+      namingStyleSizeCor +
+      "\n"
   );
   fs.appendFileSync(
     "./results/overall_averages.csv",
-    calculateAvg(grammaticalStructure) + "\n"
+    calculateAvg(grammaticalStructure) +
+      "," +
+      grammaticalStructureExpCor +
+      "," +
+      grammaticalStructureSizeCor +
+      "\n"
   );
   fs.appendFileSync(
     "./results/overall_averages.csv",
-    calculateAvg(verbPhrase) + "\n"
+    calculateAvg(verbPhrase) +
+      "," +
+      verbPhraseExpCor +
+      "," +
+      verbPhraseSizeCor +
+      "\n"
   );
   fs.appendFileSync(
     "./results/overall_averages.csv",
-    calculateAvg(dictionaryTerms) + "\n"
+    calculateAvg(dictionaryTerms) +
+      "," +
+      dictionaryTermsExpCor +
+      "," +
+      dictionaryTermsSizeCor +
+      "\n"
   );
   fs.appendFileSync(
     "./results/overall_averages.csv",
-    calculateAvg(fullWords) + "\n"
+    calculateAvg(fullWords) +
+      "," +
+      fullWordsExpCor +
+      "," +
+      fullWordsSizeCor +
+      "\n"
   );
   fs.appendFileSync(
     "./results/overall_averages.csv",
-    calculateAvg(length) + "\n"
+    calculateAvg(length) + "," + lengthExpCor + "," + lengthSizeCor + "\n"
   );
   fs.appendFileSync(
     "./results/overall_averages.csv",
-    calculateAvg(abbreviations) + "\n"
+    calculateAvg(abbreviations) +
+      "," +
+      abbreviationsExpCor +
+      "," +
+      abbreviationsSizeCor +
+      "\n"
   );
   fs.appendFileSync(
     "./results/overall_averages.csv",
-    calculateAvg(acronyms) + "\n"
+    calculateAvg(acronyms) + "," + acronymsExpCor + "," + acronymsSizeCor + "\n"
   );
 })();
