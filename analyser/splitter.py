@@ -3,7 +3,7 @@ import sys
 from spiral import ronin
 import enchant
 import spacy
-from naming_style_check import check_grammatical_structure, check_camel_case, check_underscore_case
+from naming_style_check import check_grammatical_structure, check_camel_case, check_underscore_case, check_pascal_case
 
 args = sys.argv
 repo_name = args[1]
@@ -22,7 +22,7 @@ words_writer.writerow(["Method Name", "Individual Word", "Dictionary Word", "POS
 # output CSV file for entire method name data
 names_file = open(sys.path[0] + '/../results/' + repo_name + '_results_method_names_conventions.csv', 'w', newline='')
 names_writer = csv.writer(names_file)
-names_writer.writerow(["Method Name", "Length (Words)", "Grammatical Structure", "Verb Phrase", "Full Words", "Camel Case", "Underscore Case"])
+names_writer.writerow(["Method Name", "Length (Words)", "Grammatical Structure", "Verb Phrase", "Full Words", "Camel Case", "Underscore Case", "Pascal Case"])
 
 # output CSV file containing method name length distribution of input repo(s)
 names_lengths_file = open(sys.path[0] + '/../results/' + repo_name + '_results_method_name_length_counts_by_words.csv', 'w', newline='')
@@ -40,6 +40,7 @@ names_verbs = {}
 names_full = {}
 names_camel = {}
 names_underscore = {}
+names_pascal = {}
 names_dict = {}
 names_length = {}
 names_non_dict = []
@@ -59,6 +60,7 @@ for name in method_names:
     is_grammatically_correct = check_grammatical_structure(split_words) # check if the method name is grammatically correct
     is_camelcase = check_camel_case(split_words) # check if the method name follows correct camel casing convention
     is_underscore_case = check_underscore_case(name) # check if the method name follows correct underscore casing convention
+    is_pascal_case = check_pascal_case(split_words)
 
     is_verb_phrase = False
     is_full_words = True
@@ -86,7 +88,7 @@ for name in method_names:
 
     # if the method name was successfully split into one or more words then record the conventions associated with it
     if len(split_words) > 0:
-        names_writer.writerow([name, len(split_words), is_grammatically_correct, is_verb_phrase, is_full_words, is_camelcase, is_underscore_case])
+        names_writer.writerow([name, len(split_words), is_grammatically_correct, is_verb_phrase, is_full_words, is_camelcase, is_underscore_case, is_pascal_case])
 
         names_lengths[len(split_words)] = names_lengths.get(len(split_words), 0) + 1 
         names_grmr_struct[str(is_grammatically_correct)] = names_grmr_struct.get(str(is_grammatically_correct), 0) + 1
@@ -94,6 +96,7 @@ for name in method_names:
         names_full[str(is_full_words)] = names_full.get(str(is_full_words), 0) + 1
         names_camel[str(is_camelcase)] = names_camel.get(str(is_camelcase), 0) + 1
         names_underscore[str(is_underscore_case)] = names_underscore.get(str(is_underscore_case), 0) + 1
+        names_pascal[str(is_pascal_case)] = names_pascal.get(str(is_pascal_case), 0) + 1
         names_dict[str(is_dictionary_terms)] = names_dict.get(str(is_dictionary_terms), 0) + 1
 
         if len(split_words) <= 8:
@@ -109,7 +112,7 @@ for word in names_non_dict:
 
 num_methods = len(method_names)
 
-names_conventions_writer.writerow(["NAMING STYLE", names_camel.get('True', 0) + names_underscore.get('True', 0), round((names_camel.get('True', 0) + names_underscore.get('True', 0))/num_methods*100, 1)])
+names_conventions_writer.writerow(["NAMING STYLE", names_camel.get('True', 0) + names_underscore.get('True', 0) + names_pascal.get('True', 0), round((names_camel.get('True', 0) + names_underscore.get('True', 0) + names_pascal.get('True', 0))/num_methods*100, 1)])
 names_conventions_writer.writerow(["GRAMMATICAL STRUCTURE", names_grmr_struct.get('True', 0), round(names_grmr_struct.get('True', 0)/num_methods*100, 1)])
 names_conventions_writer.writerow(["VERB PHRASE", names_verbs.get('True', 0), round(names_verbs.get('True', 0)/num_methods*100, 1)])
 names_conventions_writer.writerow(["DICTIONARY TERMS", names_dict.get('True', 0), round(names_dict.get('True', 0)/num_methods*100, 1)])

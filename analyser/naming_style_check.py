@@ -27,7 +27,7 @@ def check_camel_case(words):
           if not x[0].islower():
               return False
       else:
-          if not x[0].isupper(): 
+          if not x[1:].islower() or not x[0].isupper(): 
               return False 
   return True
 
@@ -40,3 +40,13 @@ def check_underscore_case(word):
     python_split = word.split("_")
 
     return ronin_split == python_split
+
+def check_pascal_case(words):
+    for (index, x) in enumerate(words):
+      if index == 0:
+          if not x[0].isupper():
+              return False
+      else:
+          if not x[1:].islower() or not x[0].isupper(): 
+              return False 
+    return True
