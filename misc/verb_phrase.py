@@ -13,7 +13,7 @@ verb_adherence_count = 0
 for line in Lines:
     count += 1
     # print("Line{}: {}".format(count, line.strip()))
-
+    print(count)
     method_name = line.strip()
 
     # print(method_name)
@@ -28,6 +28,6 @@ for line in Lines:
             continue
       
 
-print(verb_adherence_count)
-print(count)
+print("VERB", verb_adherence_count)
+print("COUNT", count)
 print((verb_adherence_count/(verb_adherence_count + count)) * 100)
