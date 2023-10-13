@@ -46,6 +46,8 @@ An example is shown below of calling the script:
 cmd /c full.bat 2023-01-01 2023-02-01
 ```
 
+All results can be found in the `/results` subfolder.
+
 ## Guidelines Paper Citation
 
 Alsuhaibani, R., Newman, C., Decker, M., Collard, M.L., Maletic, J.I., "On the Naming of Methods: A Survey of Professional Developers", in the Proceedings of the 43rd International Conference on Software Engineering (ICSE), Madrid Spain, May 25 - 28, 2021, 13 pages
