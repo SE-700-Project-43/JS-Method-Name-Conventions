@@ -34,7 +34,11 @@ pip install -r requirements.txt
 
 3. Adding Personal GitHub Token
 
-Add your Persnal GitHub Token to the .env variable `GITHUB_TOKEN`.
+Create a .env file in the root directory and add your Personal Github Token.
+
+```
+GITHUB_TOKEN=YOURGITHUBTOKEN
+```
 
 ### Running the tool
 
