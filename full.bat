@@ -14,7 +14,7 @@ node script.js
 
 ECHO Analysis Complete
 
-node expSizeWriter.js
+node ./misc/expSizeWriter.js
 gnuplot.exe ./results/generate_exp_size_plots.gnuplot
 
 ECHO Exp Size Plots Complete
