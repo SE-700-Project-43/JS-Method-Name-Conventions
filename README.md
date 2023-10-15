@@ -1,5 +1,5 @@
 # JS-Method-Name-Conventions
-This repository contains a tool used to extract and analyse method names in a JavaScript environemnt. Method names are compared against eight naming guidelines as proposed by Alsuhaibani et al. The tool automates the extraction of JavaScript source code, parsing in method names and analysing them against the guidelines. 
+This repository contains a tool to extract and analyse method names in JavaScript. Method names are compared against eight naming guidelines proposed by Alsuhaibani et al. The tool automates the extraction of JavaScript source code, parsing in method names and analysing them against the guidelines. 
 
 ## Setup instructions
 
