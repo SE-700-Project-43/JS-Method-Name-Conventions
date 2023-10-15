@@ -42,8 +42,7 @@ GITHUB_TOKEN=YOURGITHUBTOKEN
 
 ### Running the tool
 
-Run the bash script `full.bat` to start the tool. The script takes in two parameters, a start date and end date in the format of YYYY-MM-DD. The start date must be before the end date, otherwise an error will be thrown. 
-
+Run the bash script `full.bat` to start the tool. The script takes in two parameters, a start date and an end date in the format of YYYY-MM-DD. The start date must be before the end date, otherwise an error will be thrown. Each instance of running the tool will produce results for **ten** repositories created within the date range. 
 An example is shown below of calling the script:
 
 ```
